@@ -40,17 +40,17 @@ html {
   @media screen and (max-width: 420px) {
     min-height: -webkit-fill-available;
   }
-}
 
-.sk-input.textarea {
-  padding: 9px 10px;
-  max-width: inherit;
-  width: calc(100% - 22px);
-  resize: vertical;
-  overflow-y: auto;
-  font-family: var(--sn-stylekit-sans-serif-font);
-  font-size: var(--sn-stylekit-font-size-editor);
-  line-height: 1.7;
+  .sk-input.textarea {
+    padding: 9px 10px;
+    max-width: inherit;
+    width: calc(100% - 22px);
+    resize: vertical;
+    overflow-y: auto;
+    font-family: var(--sn-stylekit-sans-serif-font);
+    font-size: var(--sn-stylekit-font-size-editor);
+    line-height: 1.7;
+  }
 }
 
 a {
