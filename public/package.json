@@ -16,6 +16,6 @@
     "url": "https://github.com/standardnotes/editor-template-cra-typescript/issues"
   },
   "sn": {
-    "main": "build/index.html"
+    "main": "index.html"
   }
 }
