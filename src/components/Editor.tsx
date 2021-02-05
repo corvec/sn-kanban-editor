@@ -1,24 +1,25 @@
 import React from 'react';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
+import Board from 'react-trello';
 
 export enum HtmlElementId {
+  board = 'board',
   snComponent = 'sn-component',
-  textarea = 'textarea',
 }
 
 export enum HtmlClassName {
+  board = 'sk-input contrast board',
   snComponent = 'sn-component',
-  textarea = 'sk-input contrast textarea',
 }
 
 export interface EditorInterface {
   printUrl: boolean;
-  text: string;
+  boardData: object;
 }
 
 const initialState = {
   printUrl: false,
-  text: '',
+  boardData: { lanes: [] },
 };
 
 let keyMap = new Map();
@@ -36,9 +37,21 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     let delegate = new EditorKitDelegate({
       /** This loads every time a different note is loaded */
       setEditorRawText: (text: string) => {
+        // TODO: handle failures to parse
+        const parsedBoardData = (() => {
+          try {
+            const data = JSON.parse(text);
+            if (data.hasOwnProperty('lanes')) {
+              return data;
+            }
+          } catch (err) {
+            console.error('Could not parse note as JSON');
+          }
+          return { lanes: [] };
+        })();
         this.setState({
           ...initialState,
-          text,
+          boardData: parsedBoardData,
         });
       },
       clearUndoHistory: () => {},
@@ -52,17 +65,11 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     });
   };
 
-  handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const target = event.target;
-    const value = target.value;
-    this.saveText(value);
-  };
-
-  saveText = (text: string) => {
+  handleDataChange = (boardData: object) => {
+    const text = JSON.stringify(boardData);
     this.saveNote(text);
-    this.setState({
-      text: text,
-    });
+    // should be unneeded as the React-Trello handles its state internally
+    // this.setState({ boardData });
   };
 
   saveNote = (text: string) => {
@@ -93,7 +100,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   };
 
   render() {
-    const { text } = this.state;
+    const { boardData } = this.state;
     return (
       <div
         className={
@@ -102,41 +109,13 @@ export default class Editor extends React.Component<{}, EditorInterface> {
         id={HtmlElementId.snComponent}
         tabIndex={0}
       >
-        <p>
-          Edit <code>src/components/Editor.tsx</code> and save to reload.
-        </p>
-        <p>
-          Visit the{' '}
-          <a
-            href="https://docs.standardnotes.org/extensions/intro"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Standard Notes documentation
-          </a>{' '}
-          to learn how to work with the Standard Notes API or{' '}
-          <a
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          .
-        </p>
-        <textarea
-          id={HtmlElementId.textarea}
-          name="text"
-          className={'sk-input contrast textarea'}
-          placeholder="Type here. Text in this textarea is automatically saved in Standard Notes"
-          rows={15}
-          spellCheck="true"
-          value={text}
-          onBlur={this.onBlur}
-          onChange={this.handleInputChange}
-          onFocus={this.onFocus}
-          onKeyDown={this.onKeyDown}
-          onKeyUp={this.onKeyUp}
+        <Board
+          id={HtmlElementId.board}
+          data={boardData}
+          canAddLanes
+          editable
+          editLaneTitle
+          onDataChange={this.handleDataChange}
         />
       </div>
     );

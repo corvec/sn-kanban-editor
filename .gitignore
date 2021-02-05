@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# Dev Env
+.idea
+
 #### Copied from Create React App ####
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.

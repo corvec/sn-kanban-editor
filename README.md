@@ -1,12 +1,54 @@
-# editor-template-cra-typescript
+# Kanban Editor for Standard Notes
 
-Template for building editors for Standard Notes using Create React App and TypeScript
+## Introduction
+
+The Kanban Editor is an unofficial editor for [Standard Notes](https://standardnotes.org),
+a free, open-source, end-to-end encrypted notes app.
+
+It integrates [rcdexta/react-trello](https://github.com/rcdexta/react-trello).
+into Standard Notes.
+
+The main use case for this is for a Personal Kanban board, but you can use it for whatever you would like!
+
+Please note that it is a very early release and I have plans to change how notes are saved.
+Later releases **may not** be compatible with your existing notes.
+
+## Demo
+
+[Try out the demo here!](https://corvec.github.io/sn-kanban-editor/)
+Note that any changes you make will be lost when you close your browser tab.
+
+## Installation
+
+1. Open the Standard Notes web or desktop app.
+2. In the lower left corner of the app, click **Extensions**.
+3. In the lower right corner, click **Import Extension**.
+4. Paste `https://corvec.github.io/sn-kanban-editor/ext.json` in the input box that appears, then press enter on your keyboard.
+5. Confirm adding the Kanban Editor.
+6. Create a new note.
+7. Open the "Editor" menu and then select "Kanban Editor"
+8. Add a lane, add some cards, and have fun!
+
+## Features
+
+1. Manage cards with titles, descriptions, and labels
+2. Drag and drop the cards between different "lanes"
+
+## Project Roadmap
+
+Please refer to the [Projects Roadmap](https://github.com/corvec/sn-kanban-editor/projects/1)
+for details on planned future development (if any).
 
 ## Development
 
-**Prerequisites:** Install [Node.js](https://nodejs.org/en/), [Yarn](https://classic.yarnpkg.com/en/docs/install/), and [Git](https://github.com/git-guides/install-git) on your computer.
+**Prerequisites:**
+You can follow the instructions to those in the
+[editor-template-cra-typescript repository](https://github.com/standardnotes/editor-template-cra-typescript)
 
-The general instructions setting up an environment to develop Standard Notes extensions can be found [here](https://docs.standardnotes.org/extensions/local-setup). You can also follow these instructions:
+You should be able to run either npm or yarn, your choice, to install project dependencies.
+
+The general instructions setting up an environment to develop Standard Notes extensions can be found
+[here](https://docs.standardnotes.org/extensions/local-setup). You can also follow these instructions:
 
 1. Fork the [repository](https://github.com/standardnotes/editor-template-cra-typescript) on GitHub.
 2. [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) your fork of the repository.
@@ -15,66 +57,26 @@ The general instructions setting up an environment to develop Standard Notes ext
 
 ### Testing in the browser
 
-1. To run the app in development mode, run `yarn start` and visit http://localhost:3001. Press `ctrl/cmd + C` to exit development mode.
+1. Set PORT=3001 in your console.
+2. Run `npm start` or `yarn start`
+3. Visit http://localhost:3001.
+4. In the console, press `ctrl/cmd + C` to exit development mode.
 
 ### Testing in the Standard Notes app
 
-1.  Create an `ext.json` in the `public` directory. You have three options:
-    1.  Use `sample.ext.json`.
-    2.  Create `ext.json` as a copy of `sample.ext.json`.
-    3.  Follow the instructions [here](https://docs.standardnotes.org/extensions/local-setup) with `url: "http://localhost:3000/index.html"`.
-2.  Install http-server using `sudo npm install -g http-server` then run `yarn server` to serve the `./build` directory at http://localhost:3000.
-3.  To build the app, run `yarn build`.
-4.  Install the editor into the [web](https://app.standardnotes.org) or [desktop](https://standardnotes.org/download) app with `http://localhost:3000/sample.ext.json` or with your custom `ext.json`. Press `ctrl/cmd + C` to shut down the server.
+1. An `ext.json` file is already present in the public directory. You will likely want to edit it.
+2. `http-server` should already be installed as a dev dependency.
+   If not, install it with `npm i -g http-server`
+3. Run `npm run build` or `yarn build` to build the app.
+4. Serve the app by running `npm run server` or `yarn server`
+5. Install the editor into the [web](https://app.standardnotes.org) or
+   [desktop](https://standardnotes.org/download) app with `http://localhost:3000/ext.json`.
+6. Press `ctrl/cmd + C` to shut down the server.
 
 ### Deployment
 
-1. To make the source code prettier, run `yarn pretty`.
-2. To the deploy the build into the `gh-pages` branch of your repository on GitHub, run `yarn deploy-stable`.
-3. To deploy the build into to the `dev` branch for testing, run `yarn deploy-dev`.
-4. To deploy the built into the `build` branch for distributing, run `yarn deploy-build` for distributing builds.
+1. Run the `deploy-dev`, `deploy-build`, or `deploy-stable` commands with npm or yarn.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-### Available Scripts
-
-In the project directory, you can run:
-
-#### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3001](http://localhost:3001) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-#### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-#### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-#### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-### Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This project was forked from [StandardNotes/editor-template-cra-typescript](https://github.com/standardnotes/editor-template-cra-typescript).
