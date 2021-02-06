@@ -1,6 +1,7 @@
 import React from 'react';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 import Board from 'react-trello';
+import { removeFromObject } from '../lib/helpers';
 
 export enum HtmlElementId {
   board = 'board',
@@ -15,6 +16,19 @@ export enum HtmlClassName {
 export interface EditorInterface {
   printUrl: boolean;
   boardData: object;
+}
+
+interface KanbanCard {
+  id: string;
+  title: string;
+  description: string;
+  laneId: string;
+}
+interface KanbanLane {
+  cards: Array<KanbanCard>;
+}
+export interface KanbanBoard {
+  lanes: Array<KanbanLane>;
 }
 
 const initialState = {
@@ -65,11 +79,20 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     });
   };
 
-  handleDataChange = (boardData: object) => {
-    const text = JSON.stringify(boardData);
+  handleDataChange = (boardData: KanbanBoard) => {
+    const cleanupObject = (obj) =>
+      removeFromObject('currentPage')(
+        removeFromObject('laneId')(removeFromObject('id')(obj))
+      );
+    const cleanBoardData = {
+      ...cleanupObject(boardData),
+      lanes: boardData.lanes.map((lane) => ({
+        ...cleanupObject(lane),
+        cards: lane.cards.map((card) => cleanupObject(card)),
+      })),
+    };
+    const text = JSON.stringify(cleanBoardData, null, 2);
     this.saveNote(text);
-    // should be unneeded as the React-Trello handles its state internally
-    // this.setState({ boardData });
   };
 
   saveNote = (text: string) => {
