@@ -1,7 +1,7 @@
 import React from 'react';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 import Board from 'react-trello';
-import { removeFromObject } from '../lib/helpers';
+import { cleanupBoardData, infuseBoardData } from '../lib/helpers';
 
 export enum HtmlElementId {
   board = 'board',
@@ -25,6 +25,7 @@ interface KanbanCard {
   laneId: string;
 }
 interface KanbanLane {
+  id: string;
   cards: Array<KanbanCard>;
 }
 export interface KanbanBoard {
@@ -80,8 +81,19 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   };
 
   handleDataChange = (boardData: KanbanBoard) => {
-    const text = JSON.stringify(boardData, null, 2);
+    const cleanBoardData = cleanupBoardData(boardData);
+    const text = JSON.stringify(cleanBoardData, null, 2);
     this.saveNote(text);
+    if (boardData.lanes.length === 0 || boardData.lanes[0].id) {
+      this.setState({ boardData });
+      console.log('No need to infuse board data');
+    } else {
+      // If the board was saved without IDs, we need to repopulate those IDs.
+      // This should only happen when first loading a note.
+      const infusedBoardData = infuseBoardData(boardData);
+      this.setState({ boardData: infusedBoardData });
+      console.log('Infused board data');
+    }
   };
 
   saveNote = (text: string) => {

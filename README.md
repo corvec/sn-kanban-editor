@@ -1,5 +1,7 @@
 # Kanban Editor for Standard Notes
 
+![Kanban Icon](/public/logo1080.png)
+
 ## Introduction
 
 The Kanban Editor is an unofficial editor for [Standard Notes](https://standardnotes.org),

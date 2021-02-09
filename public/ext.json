@@ -3,11 +3,11 @@
   "name": "Kanban Editor",
   "content_type": "SN|Component",
   "area": "editor-editor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Kanban board editor for Standard Notes using react-trello",
-  "url": "http://localhost:3000/index.html",
+  "url": "https://corvec.github.io/sn-kanban-editor/index.html",
   "download_url": "",
-  "latest_url": "",
+  "latest_url": "https://corvec.github.io/sn-kanban-editor/ext.json",
   "marketing_url": "https://github.com/corvec/sn-kanban-editor",
-  "thumbnail_url": ""
+  "thumbnail_url": "https://corvec.github.io/sn-kanban-editor/logo512.png"
 }
