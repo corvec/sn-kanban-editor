@@ -1,7 +1,12 @@
 import React from 'react';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 import Board from 'react-trello';
-import { cleanupBoardData, infuseBoardData } from '../lib/helpers';
+import {
+  cleanupBoardData,
+  infuseBoardData,
+  convertToMarkdown,
+} from '../lib/helpers';
+import { KanbanBoard } from '../../types/react-trello';
 
 export enum HtmlElementId {
   board = 'board',
@@ -16,20 +21,6 @@ export enum HtmlClassName {
 export interface EditorInterface {
   printUrl: boolean;
   boardData: object;
-}
-
-interface KanbanCard {
-  id: string;
-  title: string;
-  description: string;
-  laneId: string;
-}
-interface KanbanLane {
-  id: string;
-  cards: Array<KanbanCard>;
-}
-export interface KanbanBoard {
-  lanes: Array<KanbanLane>;
 }
 
 const initialState = {
@@ -84,6 +75,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     const cleanBoardData = cleanupBoardData(boardData);
     const text = JSON.stringify(cleanBoardData, null, 2);
     this.saveNote(text);
+    console.log(`Markdown:\n${convertToMarkdown(boardData)}`);
     if (boardData.lanes.length === 0 || boardData.lanes[0].id) {
       this.setState({ boardData });
       console.log('No need to infuse board data');
