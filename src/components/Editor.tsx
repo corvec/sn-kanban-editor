@@ -4,7 +4,8 @@ import Board from 'react-trello';
 import {
   cleanupBoardData,
   infuseBoardData,
-  convertToMarkdown,
+  convertBoardDataToMarkdown,
+  convertMarkdownToBoardData,
 } from '../lib/helpers';
 import { KanbanBoard } from '../../types/react-trello';
 
@@ -36,7 +37,10 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   constructor(props: EditorInterface) {
     super(props);
     this.configureEditorKit();
-    this.state = initialState;
+    this.state = {
+      ...initialState,
+      ...props,
+    };
   }
 
   configureEditorKit = () => {
@@ -75,7 +79,21 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     const cleanBoardData = cleanupBoardData(boardData);
     const text = JSON.stringify(cleanBoardData, null, 2);
     this.saveNote(text);
-    console.log(`Markdown:\n${convertToMarkdown(boardData)}`);
+    try {
+      const markdown = convertBoardDataToMarkdown(boardData);
+      console.log(`Markdown:\n${markdown}`);
+      try {
+        console.log(
+          `Converting markdown back to an object:\n${JSON.stringify(
+            convertMarkdownToBoardData(markdown)
+          )}`
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    } catch (e) {
+      console.error(e);
+    }
     if (boardData.lanes.length === 0 || boardData.lanes[0].id) {
       this.setState({ boardData });
       console.log('No need to infuse board data');
@@ -116,7 +134,6 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   };
 
   render() {
-    const { boardData } = this.state;
     return (
       <div
         className={
@@ -127,7 +144,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       >
         <Board
           id={HtmlElementId.board}
-          data={boardData}
+          data={this.state.boardData}
           canAddLanes
           editable
           editLaneTitle
