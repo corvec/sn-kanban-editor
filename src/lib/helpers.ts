@@ -15,11 +15,11 @@ export const removeFromObject = (key) => ({ [key]: _, ...otherEntities }) => ({
   ...otherEntities,
 });
 
-const cleanupBoardObj = (obj) =>
+const cleanupBoardObj = <T extends object>(obj: T): T =>
   removeFromObject('currentPage')(
     removeFromObject('laneId')(removeFromObject('id')(obj))
-  );
-export const cleanupBoardData = (boardData) => ({
+  ) as T;
+export const cleanupBoardData = (boardData: KanbanBoard): KanbanBoard => ({
   ...cleanupBoardObj(boardData),
   lanes: boardData.lanes.map((lane) => ({
     ...cleanupBoardObj(lane),
@@ -27,7 +27,7 @@ export const cleanupBoardData = (boardData) => ({
   })),
 });
 
-export const infuseBoardData = (boardData: KanbanBoard) => {
+export const infuseBoardData = (boardData: KanbanBoard): KanbanBoard => {
   return {
     ...boardData,
     lanes: boardData.lanes.map((lane: KanbanLane) => {
@@ -51,7 +51,7 @@ export const convertBoardDataToMarkdown = (boardData: KanbanBoard): string => {
     .join('\n\n');
 };
 
-const convertCardsToMarkdown = (cards: Array<KanbanCard>) => {
+const convertCardsToMarkdown = (cards: Array<KanbanCard>): string => {
   const cardFields = ['description', 'label'];
   return cards
     .map((card) => {
@@ -64,16 +64,18 @@ const convertCardsToMarkdown = (cards: Array<KanbanCard>) => {
     .join('\n');
 };
 
-const fieldToMarkdown = (card: KanbanCard) => (fieldName: string) =>
+const fieldToMarkdown = (card: KanbanCard) => (fieldName: string): string =>
   card[fieldName] ? `  * ${fieldName}: ${card[fieldName]}` : null;
 
 export const convertMarkdownToBoardData = (markdown: string): KanbanBoard => {
-  const result = { lanes: [] };
+  const result: KanbanBoard = { lanes: [] };
   const lines = markdown.split('\n');
   let laneIndex = -1;
-  let cardIndex;
+  let cardIndex = -1;
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
+    const errorData = () =>
+      `\nLine ${i}.\nLane Index: ${laneIndex}.\nCard Index: ${cardIndex}.\nLine text: ${line}`;
     if (!line) continue;
     if (line.startsWith('# ')) {
       laneIndex += 1;
@@ -82,23 +84,27 @@ export const convertMarkdownToBoardData = (markdown: string): KanbanBoard => {
       result.lanes.push(lane);
     } else if (line.startsWith('* ')) {
       if (result.lanes.length === 0) {
-        throw new Error('Cannot add cards before adding lanes!');
+        throw new Error('Cannot add cards before adding lanes!' + errorData());
       }
-      const card = { title: line.slice(2) };
+      const card: KanbanCard = { title: line.slice(2) };
       cardIndex += 1;
       result.lanes[laneIndex].cards.push(card);
-    } else if (line.startsWith('  * description: ')) {
-      if (!cardIndex) {
-        throw new Error('Cannot add card fields before adding a card!');
+    } else if (line.toLowerCase().startsWith('  * description: ')) {
+      if (cardIndex < 0) {
+        throw new Error(
+          'Cannot add card fields before adding a card!' + errorData()
+        );
       }
       result.lanes[laneIndex].cards[cardIndex].description = line.slice(17);
-    } else if (line.startsWith('  * label: ')) {
-      if (!cardIndex) {
-        throw new Error('Cannot add card fields before adding a card!');
+    } else if (line.toLowerCase().startsWith('  * label: ')) {
+      if (cardIndex < 0) {
+        throw new Error(
+          'Cannot add card fields before adding a card!' + errorData()
+        );
       }
       result.lanes[laneIndex].cards[cardIndex].label = line.slice(11);
     } else {
-      console.log(`Cannot parse line: ${line}`);
+      console.log(`Cannot parse line: ${line}${errorData()}`);
     }
   }
   return result;
