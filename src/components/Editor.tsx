@@ -126,14 +126,15 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   render() {
     return (
       <div
-        className={
-          HtmlElementId.snComponent + (this.state.printUrl ? ' print-url' : '')
-        }
+        className={`${HtmlClassName.snComponent}${
+          this.state.printUrl ? ' print-url' : ''
+        }`}
         id={HtmlElementId.snComponent}
         tabIndex={0}
       >
         <Board
           id={HtmlElementId.board}
+          className={HtmlClassName.board}
           data={this.state.boardData}
           canAddLanes
           editable
