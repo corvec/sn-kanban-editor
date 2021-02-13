@@ -64,8 +64,17 @@ const convertCardsToMarkdown = (cards: Array<KanbanCard>): string => {
     .join('\n');
 };
 
+const titleCaseWord = (text: string): string =>
+  text.replace(/\w/, (firstLetter) => firstLetter.toUpperCase());
+
+const titleCase = (text: string): string =>
+  text
+    .split(' ')
+    .map((word) => titleCaseWord(word.toLowerCase()))
+    .join(' ');
+
 const fieldToMarkdown = (card: KanbanCard) => (fieldName: string): string =>
-  card[fieldName] ? `  * ${fieldName}: ${card[fieldName]}` : null;
+  card[fieldName] ? `  * ${titleCase(fieldName)}: ${card[fieldName]}` : null;
 
 export const convertMarkdownToBoardData = (markdown: string): KanbanBoard => {
   const result: KanbanBoard = { lanes: [] };
