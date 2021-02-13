@@ -1,4 +1,5 @@
 import { convertBoardDataToMarkdown } from './convertBoardDataToMarkdown';
+import { KanbanBoard } from '../../types/react-trello';
 
 test('converts simple board data', () => {
   const input = {
@@ -21,4 +22,62 @@ test('converts simple board data', () => {
   * Label: label`;
   const result = convertBoardDataToMarkdown(input);
   expect(result).toEqual(expectedOutput);
+});
+
+test('converts JSON with cards with comments', () => {
+  const input: KanbanBoard = {
+    lanes: [
+      {
+        title: 'Lane 1',
+        cards: [
+          {
+            title: 'Card 1',
+            description: 'desc',
+            label: 'label',
+            comments: ['Comment 1', 'Comment 2', 'Comment 3'],
+          },
+          {
+            title: 'Card 2',
+            description: 'desc 2',
+            label: 'label 2',
+            comments: ['Comment 4', 'Comment 5'],
+          },
+        ],
+      },
+      {
+        title: 'Lane 2',
+        cards: [
+          {
+            title: 'Card 3',
+            description: 'desc 3',
+            label: 'label 3',
+            comments: ['Comment 6'],
+          },
+        ],
+      },
+    ],
+  };
+  const expectedResult = `# Lane 1
+* Card 1
+  * Description: desc
+  * Label: label
+  * Comments:
+    * Comment 1
+    * Comment 2
+    * Comment 3
+* Card 2
+  * Description: desc 2
+  * Label: label 2
+  * Comments:
+    * Comment 4
+    * Comment 5
+
+# Lane 2
+* Card 3
+  * Description: desc 3
+  * Label: label 3
+  * Comments:
+    * Comment 6`;
+  const result = convertBoardDataToMarkdown(input);
+  expect(result).toEqual(expectedResult);
 });

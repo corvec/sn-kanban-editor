@@ -15,7 +15,12 @@ const convertCardsToMarkdown = (cards: Array<KanbanCard>): string => {
         .map(fieldToMarkdown(card))
         .filter((_) => _)
         .join('\n');
-      return `* ${card.title}${fieldData && '\n'}${fieldData}`;
+      const commentData = (card.comments || [])
+        .map((comment) => `    * ${comment}`)
+        .join('\n');
+      return `* ${card.title}${fieldData && '\n'}${fieldData}${
+        commentData && '\n  * Comments:\n'
+      }${commentData}`;
     })
     .join('\n');
 };

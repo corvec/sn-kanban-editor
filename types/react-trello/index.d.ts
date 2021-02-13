@@ -6,6 +6,7 @@ export interface KanbanCard {
   description?: string;
   label?: string;
   laneId?: string;
+  comments?: Array<string>;
 }
 export interface KanbanLane {
   id?: string;
@@ -15,5 +16,6 @@ export interface KanbanLane {
 }
 export interface KanbanBoard {
   lanes: Array<KanbanLane>;
+  config?: object;
 }
 
