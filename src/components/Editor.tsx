@@ -52,7 +52,9 @@ export default class Editor extends React.Component<{}, EditorInterface> {
               return data;
             }
           } catch (err) {
-            console.error('Could not parse note as JSON');
+            console.log('Could not parse note as JSON, trying Markdown');
+            const data = convertMarkdownToBoardData(text);
+            return data;
           }
           return { lanes: [] };
         })();
@@ -73,25 +75,15 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   };
 
   handleDataChange = (boardData: KanbanBoard) => {
-    const cleanBoardData = cleanupBoardData(boardData);
-    const text = JSON.stringify(cleanBoardData, null, 2);
-    this.saveNote(text);
-    try {
-      const markdown = convertBoardDataToMarkdown(boardData);
-      console.log(`Markdown:\n${markdown}`);
-      try {
-        console.log(
-          `Converting markdown back to an object:\n${JSON.stringify(
-            convertMarkdownToBoardData(markdown)
-          )}`
-        );
-      } catch (e) {
-        console.error(e);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    if (boardData.lanes.length === 0 || boardData.lanes[0].id) {
+    const markdown = convertBoardDataToMarkdown(boardData);
+    this.saveNote(markdown);
+    if (typeof boardData === 'string') {
+      const newBoardData = infuseBoardData(
+        convertMarkdownToBoardData(boardData)
+      );
+      this.setState({ boardData: newBoardData });
+      console.log('Convert board data from markdown and infuse');
+    } else if (boardData.lanes.length === 0 || boardData.lanes[0].id) {
       this.setState({ boardData });
       console.log('No need to infuse board data');
     } else {
