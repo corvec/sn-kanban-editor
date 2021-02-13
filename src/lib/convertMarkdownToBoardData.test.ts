@@ -1,5 +1,5 @@
-import { convertMarkdownToBoardData } from './helpers';
 import { KanbanBoard } from '../../types/react-trello';
+import { convertMarkdownToBoardData } from './convertMarkdownToBoardData';
 
 test('converts simple markdown file', () => {
   const input = `# Lane 1

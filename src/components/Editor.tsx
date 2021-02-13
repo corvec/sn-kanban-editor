@@ -1,14 +1,11 @@
 import React from 'react';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 import Board from 'react-trello';
-import {
-  cleanupBoardData,
-  infuseBoardData,
-  convertBoardDataToMarkdown,
-  convertMarkdownToBoardData,
-} from '../lib/helpers';
+import { cleanupBoardData, infuseBoardData } from '../lib/helpers';
 import { KanbanBoard } from '../../types/react-trello';
+import { convertMarkdownToBoardData } from '../lib/convertMarkdownToBoardData';
 
+import { convertBoardDataToMarkdown } from '../lib/convertBoardDataToMarkdown';
 export enum HtmlElementId {
   board = 'board',
   snComponent = 'sn-component',

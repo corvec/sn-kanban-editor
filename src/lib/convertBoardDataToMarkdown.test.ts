@@ -1,4 +1,4 @@
-import { convertBoardDataToMarkdown } from './helpers';
+import { convertBoardDataToMarkdown } from './convertBoardDataToMarkdown';
 
 test('converts simple board data', () => {
   const input = {
