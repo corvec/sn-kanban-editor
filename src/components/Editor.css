@@ -1,0 +1,20 @@
+#sn-component .react-trello-board {
+  background-color: var(--sn-stylekit-background-color);
+  color: var(--sn-stylekit-foreground-color);
+}
+#sn-component .react-trello-lane {
+  color: var(--sn-stylekit-contrast-foreground-color);
+  border-color: var(--sn-stylekit-contrast-border-color);
+  background-color: var(--sn-stylekit-contrast-background-color);
+}
+#sn-component .react-trello-lane textarea {
+  color: var(--sn-stylekit-contrast-foreground-color);
+}
+#sn-component .react-trello-card {
+  background-color: var(--sn-stylekit-secondary-background-color);
+  color: var(--sn-stylekit-secondary-foreground-color);
+  border-color: var(--sn-stylekit-secondary-border-color);
+}
+#sn-component .react-trello-card textarea {
+  color: var(--sn-stylekit-secondary-foreground-color);
+}

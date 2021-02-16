@@ -4,6 +4,7 @@ import Board from 'react-trello';
 import { cleanupBoardData, infuseBoardData } from '../lib/helpers';
 import { KanbanBoard } from '../../types/react-trello';
 import { convertMarkdownToBoardData } from '../lib/convertMarkdownToBoardData';
+import './Editor.css';
 
 import { convertBoardDataToMarkdown } from '../lib/convertBoardDataToMarkdown';
 export enum HtmlElementId {
