@@ -7,9 +7,14 @@
   border-color: var(--sn-stylekit-contrast-border-color);
   background-color: var(--sn-stylekit-contrast-background-color);
 }
-#sn-component .react-trello-lane textarea {
+#sn-component .react-trello-lane > header textarea {
   color: var(--sn-stylekit-contrast-foreground-color);
 }
+/* Lane ellipsis */
+#sn-component .react-trello-lane > header > div > a > button {
+  color: var(--sn-stylekit-contrast-foreground-color);
+}
+
 #sn-component .react-trello-card {
   background-color: var(--sn-stylekit-secondary-background-color);
   color: var(--sn-stylekit-secondary-foreground-color);
@@ -18,3 +23,89 @@
 #sn-component .react-trello-card textarea {
   color: var(--sn-stylekit-secondary-foreground-color);
 }
+#sn-component .react-trello-card textarea:focus {
+  color: var(--sn-stylekit-paragraph-text-color);
+  background-color: var(--sn-stylekit-secondary-contrast-background-color);
+  border-color: var(--sn-stylekit-input-border-color);
+}
+/* Card x button */
+#sn-component .react-trello-card:hover > header > div > button {
+  color: var(--sn-stylekit-secondary-foreground-color);
+}
+/* Click to add card */
+#sn-component .react-trello-lane > a {
+  color: var(--sn-stylekit-info-color);
+}
+#sn-component .react-trello-lane > a:hover {
+  color: var(--sn-stylekit-neutral-color);
+}
+
+/* New Card form */
+#sn-component .react-trello-lane > div > div:last-child {
+  background-color: var(--sn-stylekit-secondary-background-color);
+  color: var(--sn-stylekit-secondary-foreground-color);
+  border-color: var(--sn-stylekit-secondary-border-color);
+}
+#sn-component .react-trello-lane > div > div:last-child article,
+#sn-component .react-trello-lane > div > div:last-child article header div,
+#sn-component .react-trello-lane > div > div:last-child article div div {
+  background-color: var(--sn-stylekit-secondary-background-color);
+  color: var(--sn-stylekit-secondary-foreground-color);
+}
+/* text while the input is active */
+#sn-component .react-trello-lane > div > div:last-child article div:focus {
+  color: var(--sn-stylekit-paragraph-text-color);
+}
+/* header when there is no text */
+#sn-component .react-trello-lane > div > div:last-child article > header > span > div {
+  background-color: var(--sn-stylekit-secondary-background-color);
+  color: var(--sn-stylekit-secondary-foreground-color);
+}
+/* Add card button */
+#sn-component .react-trello-lane > div > div:last-child button:first-of-type {
+  background-color: var(--sn-stylekit-success-color);
+  color: var(--sn-stylekit-success-contrast-color);
+  border-color: var(--sn-stylekit-secondary-contrast-border-color);
+}
+/* Cancel button */
+#sn-component .react-trello-lane > div > div:last-child button:last-of-type {
+  background-color: var(--sn-stylekit-neutral-color);
+  color: var(--sn-stylekit-neutral-contrast-color);
+  border-color: var(--sn-stylekit-secondary-contrast-border-color);
+}
+
+/* Add another lane button and form */
+/* Top level Button */
+#sn-component .react-trello-board > div:last-of-type > section > button {
+  border-color: var(--sn-stylekit-secondary-border-color);
+  background-color: var(--sn-stylekit-info-color);
+  color: var(--sn-stylekit-info-contrast-color);
+}
+/* Form */
+#sn-component .react-trello-board > div:last-of-type > section {
+  color: var(--sn-stylekit-contrast-foreground-color);
+  border-color: var(--sn-stylekit-contrast-border-color);
+  background-color: var(--sn-stylekit-contrast-background-color);
+}
+#sn-component .react-trello-board > div:last-of-type > section textarea {
+  color: var(--sn-stylekit-contrast-foreground-color);
+  background-color: var(--sn-stylekit-contrast-background-color);
+}
+#sn-component .react-trello-board > div:last-of-type > section textarea:focus {
+  color: var(--sn-stylekit-paragraph-text-color);
+  border-color: var(--sn-stylekit-info-color);
+  background-color: var(--sn-stylekit-contrast-background-color);
+}
+/* Add lane button */
+#sn-component .react-trello-board > div:last-of-type > section button:first-of-type {
+  background-color: var(--sn-stylekit-success-color);
+  color: var(--sn-stylekit-success-contrast-color);
+  border-color: var(--sn-stylekit-secondary-contrast-border-color);
+}
+/* Cancel button */
+#sn-component .react-trello-board > div:last-of-type > section button:last-of-type {
+  background-color: var(--sn-stylekit-neutral-color);
+  color: var(--sn-stylekit-neutral-contrast-color);
+  border-color: var(--sn-stylekit-secondary-contrast-border-color);
+}
+
