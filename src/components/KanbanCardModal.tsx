@@ -1,22 +1,101 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 
-const CardComment = ({ comment }) => <div>Comment: {comment}</div>;
+const CardComment = ({ comment, deleteComment }) => (
+  <div
+    style={{
+      backgroundColor: 'var(--sn-stylekit-secondary-contrast-background-color)',
+      color: 'var(--sn-stylekit-secondary-contrast-foreground-color)',
+      border: '1px solid var(--sn-stylekit-secondary-contrast-border-color)',
+      marginBottom: '1em',
+      padding: '0.5em',
+    }}
+  >
+    &gt; {comment}
+    <button style={{ float: 'right' }} onClick={deleteComment}>
+      x
+    </button>
+  </div>
+);
+
+const NoComments = () => (
+  <div>
+    <span style={{ fontStyle: 'italic' }}>No Comments yet...</span>
+  </div>
+);
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor: 'var(--sn-stylekit-contrast-background-color)',
+    color: 'var(--sn-stylekit-contrast-foreground-color)',
+    borderColor: 'var(--sn-stylekit-contrast-border-color)',
+    borderWidth: '3px',
+  },
+};
 
 export const KanbanCardModal = ({ card, hideModal, setComments }) => {
   const { title, description, label, comments } = card;
+  const [newComment, setNewComment] = useState('');
+  const [updatedComments, setUpdatedComments] = useState(comments || []);
+  const addComment = () => {
+    setUpdatedComments([...updatedComments, newComment]);
+    setNewComment('');
+  };
+  const deleteCommentByIndex = (index) => {
+    setUpdatedComments(updatedComments.filter((_, i) => index !== i));
+  };
   const closeModal = () => {
-    // setComments(comments);
+    setComments(updatedComments);
     hideModal();
   };
+
   return (
-    <ReactModal isOpen onRequestClose={closeModal}>
-      <h1>{title}</h1>
-      <p>{description}</p>
-      {(comments || []).map((comment, i) => (
-        <CardComment comment={comment} key={i} />
-      ))}
-      <input placeholder="New Comment" />
+    <ReactModal isOpen onRequestClose={closeModal} style={customStyles}>
+      <header>
+        <span style={{ fontWeight: 'bold', lineHeight: '18px' }}>{title}</span>
+      </header>
+      <div
+        style={{
+          marginBottom: '1em',
+          border: '1px dotted var(--sn-stylekit-secondary-border-color)',
+          backgroundColor: 'var(--sn-stylekit-secondary-background-color)',
+          color: 'var(--sn-stylekit-secondary-foreground-color)',
+          padding: '1em',
+        }}
+      >
+        <span>{description}</span>
+      </div>
+      <div>
+        {updatedComments && updatedComments.length > 0 ? (
+          updatedComments.map((comment, i) => (
+            <CardComment
+              key={i}
+              comment={comment}
+              deleteComment={() => deleteCommentByIndex(i)}
+            />
+          ))
+        ) : (
+          <NoComments />
+        )}
+      </div>
+      <input
+        placeholder="New Comment"
+        value={newComment}
+        onChange={(e) => setNewComment(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            addComment();
+            e.preventDefault();
+          }
+        }}
+      />
+      <button onClick={addComment}>Add Comment</button>
     </ReactModal>
   );
 };

@@ -25,6 +25,10 @@ export const EditorInternal = ({ printUrl, boardData, handleDataChange }) => {
     cardId: null,
     laneId: null,
   });
+  let eventBus = { publish: (event) => console.log('not yet wired') };
+  const setEventBus = (wiredEventBus) => {
+    eventBus = wiredEventBus;
+  };
   ReactModal.setAppElement(document.getElementById(HtmlElementId.snComponent));
   const [showModal, hideModal] = useModal(
     () => (
@@ -48,10 +52,6 @@ export const EditorInternal = ({ printUrl, boardData, handleDataChange }) => {
   const openModal = (card) => {
     setCard(card);
     showModal();
-  };
-  let eventBus = undefined;
-  const setEventBus = (handle) => {
-    eventBus = handle;
   };
   return (
     <div

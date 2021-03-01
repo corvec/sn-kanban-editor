@@ -69,9 +69,9 @@ If you make changes to the dependencies, you can push those changes to this proj
 
 #### List of repositories currently managed by yalc
 
-| Dependency   | Repository                              |
-| ------------ | --------------------------------------- |
-| react-trello | git@github.com:rcdexta/react-trello.git |
+| Dependency   | Repository                             | Branch                             |
+| ------------ | -------------------------------------- | ---------------------------------- |
+| react-trello | https://github.com/corvec/react-trello | bugfix/editable-cardclick-conflict |
 
 ## Features
 
