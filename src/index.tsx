@@ -6,9 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import Editor from './components/Editor';
 import './stylesheets/main.scss';
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Editor />
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root')
 );
 

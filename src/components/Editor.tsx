@@ -1,30 +1,28 @@
 import React from 'react';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
-import Board from 'react-trello';
-import { cleanupBoardData, infuseBoardData } from '../lib/helpers';
+import { ModalProvider } from 'react-modal-hook';
 import { KanbanBoard } from '../../types/react-trello';
+import { infuseBoardData } from '../lib/helpers';
 import { convertMarkdownToBoardData } from '../lib/convertMarkdownToBoardData';
-import './Editor.css';
-
 import { convertBoardDataToMarkdown } from '../lib/convertBoardDataToMarkdown';
-export enum HtmlElementId {
-  board = 'board',
-  snComponent = 'sn-component',
-}
-
-export enum HtmlClassName {
-  board = 'sk-input contrast board',
-  snComponent = 'sn-component',
-}
-
-export interface EditorInterface {
-  printUrl: boolean;
-  boardData: object;
-}
+import './Editor.css';
+import { EditorInterface } from '../../types/editor';
+import { EditorInternal } from './EditorInternal';
 
 const initialState = {
   printUrl: false,
-  boardData: { lanes: [] },
+  boardData: {
+    lanes: [
+      {
+        id: 'Lane1',
+        title: 'Lane 1',
+        label: '',
+        cards: [
+          { id: 'Card1', title: 'Card 1', description: 'desc', label: 'label' },
+        ],
+      },
+    ],
+  },
 };
 
 let keyMap = new Map();
@@ -125,23 +123,13 @@ export default class Editor extends React.Component<{}, EditorInterface> {
 
   render() {
     return (
-      <div
-        className={`${HtmlClassName.snComponent}${
-          this.state.printUrl ? ' print-url' : ''
-        }`}
-        id={HtmlElementId.snComponent}
-        tabIndex={0}
-      >
-        <Board
-          id={HtmlElementId.board}
-          className={HtmlClassName.board}
-          data={this.state.boardData}
-          canAddLanes
-          editable
-          editLaneTitle
-          onDataChange={this.handleDataChange}
+      <ModalProvider>
+        <EditorInternal
+          printUrl={this.state.printUrl}
+          boardData={this.state.boardData}
+          handleDataChange={this.handleDataChange}
         />
-      </div>
+      </ModalProvider>
     );
   }
 }
