@@ -38,6 +38,7 @@
     "pretty": "prettier --write 'src/**/*.{html,css,scss,js,jsx,ts,tsx,json}' README.md"
   },
   "dependencies": {
+    "@tabler/icons": "^1.39.1",
     "filesafe-embed": "^1.0.10",
     "filesafe-js": "^1.0.4",
     "lodash": "^4.17.20",
@@ -47,7 +48,7 @@
     "react-modal": "^3.12.1",
     "react-modal-hook": "^3.0.0",
     "react-redux": "^7.2.2",
-    "react-trello": "link:.yalc/react-trello",
+    "react-trello": "file:.yalc/react-trello",
     "redux": "^4.0.5",
     "redux-actions": "^2.6.5",
     "redux-logger": "^3.0.6",

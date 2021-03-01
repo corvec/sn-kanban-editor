@@ -61,7 +61,7 @@ Steps 2 through 5 must be performed for each yalc dependency.
    `node_modules/react-trello`
 
 - `cd ~/repos/sn-kanban-editor`
-- `yalc add --link react-trello`
+- `yalc add --link --pure react-trello`
 
 If you make changes to the dependencies, you can push those changes to this project by running
 

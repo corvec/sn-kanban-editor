@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
+import { IconMessage, IconCircleX } from '@tabler/icons';
 
 const CardComment = ({ comment, deleteComment }) => (
   <div
@@ -11,9 +12,14 @@ const CardComment = ({ comment, deleteComment }) => (
       padding: '0.5em',
     }}
   >
-    &gt; {comment}
-    <button style={{ float: 'right' }} onClick={deleteComment}>
-      x
+    <IconMessage size={14} stroke={1} />
+    <span style={{ paddingLeft: '0.5em' }}>{comment}</span>
+    <button
+      style={{ float: 'right', border: '0', background: 'transparent' }}
+      onClick={deleteComment}
+      className="comment-remove-button"
+    >
+      <IconCircleX size={14} stroke={1} />
     </button>
   </div>
 );

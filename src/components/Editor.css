@@ -57,7 +57,14 @@
   color: var(--sn-stylekit-paragraph-text-color);
 }
 /* header when there is no text */
-#sn-component .react-trello-lane > div > div:last-child article > header > span > div {
+#sn-component
+  .react-trello-lane
+  > div
+  > div:last-child
+  article
+  > header
+  > span
+  > div {
   background-color: var(--sn-stylekit-secondary-background-color);
   color: var(--sn-stylekit-secondary-foreground-color);
 }
@@ -97,15 +104,34 @@
   background-color: var(--sn-stylekit-contrast-background-color);
 }
 /* Add lane button */
-#sn-component .react-trello-board > div:last-of-type > section button:first-of-type {
+#sn-component
+  .react-trello-board
+  > div:last-of-type
+  > section
+  button:first-of-type {
   background-color: var(--sn-stylekit-success-color);
   color: var(--sn-stylekit-success-contrast-color);
   border-color: var(--sn-stylekit-secondary-contrast-border-color);
 }
 /* Cancel button */
-#sn-component .react-trello-board > div:last-of-type > section button:last-of-type {
+#sn-component
+  .react-trello-board
+  > div:last-of-type
+  > section
+  button:last-of-type {
   background-color: var(--sn-stylekit-neutral-color);
   color: var(--sn-stylekit-neutral-contrast-color);
   border-color: var(--sn-stylekit-secondary-contrast-border-color);
 }
 
+/* Modal */
+
+.ReactModalPortal .comment-remove-button svg {
+  stroke: var(--sn-stylekit-neutral-contrast-color);
+  fill: var(--sn-stylekit-neutral-color);
+}
+
+.ReactModalPortal .comment-remove-button:hover svg {
+  stroke: var(--sn-stylekit-danger-contrast-color);
+  fill: var(--sn-stylekit-danger-color);
+}

@@ -1577,6 +1577,11 @@
     "@svgr/plugin-svgo" "^5.5.0"
     "loader-utils" "^2.0.0"
 
+"@tabler/icons@^1.39.1":
+  "integrity" "sha512-zYP8aijzKNfwxSWyr9/d2S6qdNA7MtHOwHg2EwqyZk7FjhD2IGIhNaFh9h8TMkVtGSUnBcnfKyJ56Eum6gTJ7A=="
+  "resolved" "https://registry.npmjs.org/@tabler/icons/-/icons-1.39.1.tgz"
+  "version" "1.39.1"
+
 "@testing-library/dom@^7.28.1", "@testing-library/dom@^7.29.0":
   "integrity" "sha512-CtrJRiSYEfbtNGtEsd78mk1n1v2TUbeABlNIcOCJdDfkN5/JTOwQEbbQpoSRxGqzcWPgStMvJ4mNolSuBRv1NA=="
   "resolved" "https://registry.npmjs.org/@testing-library/dom/-/dom-7.29.4.tgz"
@@ -9865,7 +9870,7 @@
     "strip-ansi" "6.0.0"
     "text-table" "0.2.0"
 
-"react-dom@*", "react-dom@>= 16.3", "react-dom@16":
+"react-dom@*", "react-dom@^16.13.1", "react-dom@>= 16.3", "react-dom@16":
   "integrity" "sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.14.0.tgz"
   "version" "16.14.0"
@@ -10033,7 +10038,7 @@
 
 "react-trello@file:.yalc/react-trello":
   "resolved" "file:.yalc/react-trello"
-  "version" "2.4.1+cd6e93a2"
+  "version" "2.4.1+c471e5ac"
   dependencies:
     "autosize" "^4.0.2"
     "classnames" "^2.2.6"
@@ -10048,7 +10053,7 @@
     "trello-smooth-dnd" "1.0.0"
     "uuid" "^3.3.2"
 
-"react@*", "react@^16.14.0", "react@>= 16.3":
+"react@*", "react@^16.13.1", "react@^16.14.0", "react@>= 16.3":
   "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   "version" "16.14.0"
