@@ -9,7 +9,7 @@ export enum HtmlElementId {
   snComponent = 'sn-component',
 }
 export enum HtmlClassName {
-  board = 'sk-input contrast board',
+  board = 'board',
   snComponent = 'sn-component',
 }
 
