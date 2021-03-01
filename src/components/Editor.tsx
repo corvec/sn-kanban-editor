@@ -11,18 +11,7 @@ import { EditorInternal } from './EditorInternal';
 
 const initialState = {
   printUrl: false,
-  boardData: {
-    lanes: [
-      {
-        id: 'Lane1',
-        title: 'Lane 1',
-        label: '',
-        cards: [
-          { id: 'Card1', title: 'Card 1', description: 'desc', label: 'label' },
-        ],
-      },
-    ],
-  },
+  boardData: { lanes: [] },
 };
 
 let keyMap = new Map();
