@@ -31,6 +31,48 @@ Note that any changes you make will be lost when you close your browser tab.
 7. Open the "Editor" menu and then select "Kanban Editor"
 8. Add a lane, add some cards, and have fun!
 
+### Setting Up Yalc-Imported Dependencies
+
+At the time of this writing, some dependencies in package.json start with `file:.yalc/`.
+This is because the current release on npm does not have fixes that were required.
+The following instructions will ensure that they are properly set up on your system.
+Steps 2 through 5 must be performed for each yalc dependency.
+
+1. Ensure that you have both yalc and yarn installed globally.
+
+- `npm i --global yarn yalc`
+
+2. From your repositories directory, clone the dependency repo.
+
+- `cd ~/repos`
+- `git clone git@github.com:rcdexta/react-trello.git`
+
+3. Prepare that repo for publication.
+
+- `cd react-trello`
+- `npm install`
+
+4. Publish that repo into the yalc store.
+
+- `yalc publish`
+
+5. Return to the sn-kanban-editor directory and re-add the yalc dependencies.  
+   NOTE: If you already ran `npm install`, you may need to first manually remove
+   `node_modules/react-trello`
+
+- `cd ~/repos/sn-kanban-editor`
+- `yalc add --link react-trello`
+
+If you make changes to the dependencies, you can push those changes to this project by running
+
+- `yalc push`
+
+#### List of repositories currently managed by yalc
+
+| Dependency   | Repository                              |
+| ------------ | --------------------------------------- |
+| react-trello | git@github.com:rcdexta/react-trello.git |
+
 ## Features
 
 1. Manage cards with titles, descriptions, and labels
