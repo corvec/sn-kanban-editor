@@ -1,6 +1,6 @@
 # Kanban Editor for Standard Notes
 
-![Kanban Icon](/public/logo1080.png)
+![Kanban Icon](/public/demo.png)
 
 ## Introduction
 
