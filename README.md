@@ -119,8 +119,12 @@ The general instructions setting up an environment to develop Standard Notes ext
 
 ### Deployment
 
-1. Run the `deploy-dev`, `deploy-build`, or `deploy-stable` commands with npm or yarn.
+1. Update the package.json version, the public/ext.json version, and the public/ext.dev.json version
+2. Update the following command to account for the updates that you wish to deploy as well as the current version, then run it.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- `npx gh-pages -b gh-pages -d build -m "Support comments on cards (show modal on click)" -g "v0.4.0"`
 
-This project was forked from [StandardNotes/editor-template-cra-typescript](https://github.com/standardnotes/editor-template-cra-typescript).
+3. On GitHub, create a new release corresponding to that tag.
+
+This project was forked from [StandardNotes/editor-template-cra-typescript](https://github.com/standardnotes/editor-template-cra-typescript),
+which was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
