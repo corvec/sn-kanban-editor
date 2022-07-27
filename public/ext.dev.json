@@ -3,7 +3,7 @@
   "name": "Kanban Editor (Dev)",
   "content_type": "SN|Component",
   "area": "editor-editor",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "DEV Kanban board editor for Standard Notes using react-trello",
   "url": "http://localhost:3000/index.html",
   "download_url": "",
