@@ -7,13 +7,16 @@
 The Kanban Editor is an unofficial editor for [Standard Notes](https://standardnotes.org),
 a free, open-source, end-to-end encrypted notes app.
 
-It integrates [rcdexta/react-trello](https://github.com/rcdexta/react-trello).
-into Standard Notes.
+It integrates [rcdexta/react-trello](https://github.com/rcdexta/react-trello), a Kanban board editor,
+and saves your notes in Markdown so that you can easily read them, export them to Listed, etc..
 
-The main use case for this is for a Personal Kanban board, but you can use it for whatever you would like!
+Because Standard Notes has [not yet implemented collaborative editing](https://standardnotes.com/help/50/can-i-collaborate-with-others-on-a-note), the main use case is for a personal Kanban board.
+However, I believe [private workspaces](https://standardnotes.com/help/80/what-are-private-workspaces) can be shared to enable asynchronous collaboration.
 
-Please note that it is a very early release and I have plans to change how notes are saved.
-Later releases **may not** be compatible with your existing notes.
+NOTE: The file format is much more stable now, but it will continue to evolve.
+I plan to keep the file format backwards compatible.
+However, it is possible that changes will be required in the future that could cause incompatibilities with existing notes.
+If possible, I will provide a migration tool to convert your notes to the new format.
 
 ## Demo
 
@@ -25,53 +28,16 @@ Note that any changes you make will be lost when you close your browser tab.
 1. Open the Standard Notes web or desktop app.
 2. In the lower left corner of the app, click **Extensions**.
 3. In the lower right corner, click **Import Extension**.
-4. Paste `https://corvec.github.io/sn-kanban-editor/ext.json` in the input box that appears, then press enter on your keyboard.
-5. Confirm adding the Kanban Editor.
-6. Create a new note.
-7. Open the "Editor" menu and then select "Kanban Editor"
-8. Add a lane, add some cards, and have fun!
+4. In the input box appears, paste:
 
-### Setting Up Yalc-Imported Dependencies
+```
+https://corvec.github.io/sn-kanban-editor/ext.json
+```
 
-At the time of this writing, some dependencies in package.json start with `file:.yalc/`.
-This is because the current release on npm does not have fixes that were required.
-The following instructions will ensure that they are properly set up on your system.
-Steps 2 through 5 must be performed for each yalc dependency.
-
-1. Ensure that you have both yalc and yarn installed globally.
-
-- `npm i --global yarn yalc`
-
-2. From your repositories directory, clone the dependency repo.
-
-- `cd ~/repos`
-- `git clone git@github.com:rcdexta/react-trello.git`
-
-3. Prepare that repo for publication.
-
-- `cd react-trello`
-- `npm install`
-
-4. Publish that repo into the yalc store.
-
-- `yalc publish`
-
-5. Return to the sn-kanban-editor directory and re-add the yalc dependencies.  
-   NOTE: If you already ran `npm install`, you may need to first manually remove
-   `node_modules/react-trello`
-
-- `cd ~/repos/sn-kanban-editor`
-- `yalc add --link --pure react-trello`
-
-If you make changes to the dependencies, you can push those changes to this project by running
-
-- `yalc push`
-
-#### List of repositories currently managed by yalc
-
-| Dependency   | Repository                             | Branch                             |
-| ------------ | -------------------------------------- | ---------------------------------- |
-| react-trello | https://github.com/corvec/react-trello | bugfix/editable-cardclick-conflict |
+6. Confirm adding the Kanban Editor.
+7. Create a new note.
+8. Open the "Editor" menu and then select "Kanban Editor"
+9. Add a lane, add some cards, and have fun!
 
 ## Features
 
@@ -83,46 +49,59 @@ If you make changes to the dependencies, you can push those changes to this proj
 Please refer to the [Projects Roadmap](https://github.com/corvec/sn-kanban-editor/projects/1)
 for details on planned future development (if any).
 
-## Development
+## Development and Running Locally
 
 **Prerequisites:**
-You can follow the instructions to those in the
-[editor-template-cra-typescript repository](https://github.com/standardnotes/editor-template-cra-typescript)
 
-You should be able to run either npm or yarn, your choice, to install project dependencies.
-
-The general instructions setting up an environment to develop Standard Notes extensions can be found
-[here](https://docs.standardnotes.org/extensions/local-setup). You can also follow these instructions:
-
-1. Fork the [repository](https://github.com/standardnotes/editor-template-cra-typescript) on GitHub.
-2. [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) your fork of the repository.
-3. Run `cd editor-template-cra-typescript` to enter the `editor-template-cra-typescript` directory.
-4. Run `yarn install` to install the dependencies on your machine as they are described in `yarn.lock`.
+1. (Optional) Fork this repo on Github.
+2. [Clone](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository) this repo or your fork.
+3. Run `cd sn-kanban-editor` and then `npm install` to install all dependencies.
 
 ### Testing in the browser
 
-1. Set PORT=3001 in your console.
-2. Run `npm start` or `yarn start`
-3. Visit http://localhost:3001.
-4. In the console, press `ctrl/cmd + C` to exit development mode.
+1. Run
 
-### Testing in the Standard Notes app
+```
+npm start
+```
 
-1. An `ext.json` file is already present in the public directory. You will likely want to edit it.
-2. `http-server` should already be installed as a dev dependency.
-   If not, install it with `npm i -g http-server`
-3. Run `npm run build` or `yarn build` to build the app.
-4. Serve the app by running `npm run server` or `yarn server`
+2. Your browser may open automatically. If not, open your browser and navigate to `http://localhost:3001/`
+3. When you're done, in the console, press `ctrl/cmd + C` to stop running the app.
+
+### Testing in your local Standard Notes app
+
+1. An `ext.dev.json` file is already present in the public directory. You may wish to edit it.
+2. To build the app, run
+
+```
+npm run build
+```
+
+4. To serve the app, run
+
+```
+npm run server
+```
+
 5. Install the editor into the [web](https://app.standardnotes.org) or
-   [desktop](https://standardnotes.org/download) app with `http://localhost:3000/ext.json`.
-6. Press `ctrl/cmd + C` to shut down the server.
+   [desktop](https://standardnotes.org/download) app by installing:
+
+```
+http://localhost:3000/ext.json
+```
+
+6. When you're done, in the console, press `ctrl + C` to shut down the server.
+
+If you run into issues, please refer to the [StandardNotes instructions for local setup](https://docs.standardnotes.com/extensions/local-setup/)
 
 ### Deployment
 
 1. Update the package.json version, the public/ext.json version, and the public/ext.dev.json version
 2. Update the following command to account for the updates that you wish to deploy as well as the current version, then run it.
 
-- `npx gh-pages -b gh-pages -d build -m "Support comments on cards (show modal on click)" -g "v0.4.0"`
+```
+npx gh-pages -b gh-pages -d build -m "Support comments on cards (show modal on click)" -g "v0.4.0"
+```
 
 3. On GitHub, create a new release corresponding to that tag.
 

@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 
 import Editor from './components/Editor';
 import './stylesheets/main.scss';
+
 ReactDOM.render(
   <React.Fragment>
     <Editor />

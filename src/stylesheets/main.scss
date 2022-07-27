@@ -1,12 +1,6 @@
 @import '~sn-stylekit/dist/stylekit.css';
 @import '~sn-stylekit/themes/titanium-theme/dist/dist.css';
 
-:root {
-  --sn-stylekit-font-size-editor: 16px;
-  --sn-stylekit-monospace-font: SFMono-Regular, Consolas, Liberation Mono, Menlo,
-    'Ubuntu Mono', courier, monospace;
-}
-
 @media screen and (max-width: 650px) {
   :root {
     --sn-stylekit-font-size-editor: 18px;
@@ -18,7 +12,6 @@
 
 body,
 html {
-  background-color: transparent;
   background-color: var(--sn-stylekit-background-color);
   font-family: var(--sn-stylekit-sans-serif-font);
   font-size: var(--sn-stylekit-base-font-size);
@@ -39,10 +32,10 @@ html {
   font-size: var(--sn-stylekit-font-size-editor);
   min-height: 100vh;
   @media screen and (max-width: 420px) {
-    min-height: -webkit-fill-available;
+    min-height: fit-content;
   }
 
-  .sk-input.textarea {
+  textarea {
     padding: 9px 10px;
     max-width: inherit;
     width: calc(100% - 22px);

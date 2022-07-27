@@ -16,6 +16,4 @@ export interface KanbanLane {
 }
 export interface KanbanBoard {
   lanes: Array<KanbanLane>;
-  config?: object;
 }
-

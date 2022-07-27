@@ -3,15 +3,19 @@ import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 import { ModalProvider } from 'react-modal-hook';
 import { KanbanBoard } from '../../types/react-trello';
 import { infuseBoardData } from '../lib/helpers';
-import { convertMarkdownToBoardData } from '../lib/convertMarkdownToBoardData';
-import { convertBoardDataToMarkdown } from '../lib/convertBoardDataToMarkdown';
+import { parseMarkdown } from '../lib/parseMarkdown';
+import { convertStateToMarkdown } from '../lib/convertStateToMarkdown';
 import './Editor.css';
 import { EditorInterface } from '../../types/editor';
 import { EditorInternal } from './EditorInternal';
 
-const initialState = {
+const initialState: EditorInterface = {
   printUrl: false,
-  boardData: { lanes: [] },
+  boardData: {
+    lanes: [],
+  },
+  editorConfig: '',
+  parsingErrors: [],
 };
 
 let keyMap = new Map();
@@ -28,27 +32,43 @@ export default class Editor extends React.Component<{}, EditorInterface> {
     };
   }
 
+  parseText(text: string): EditorInterface {
+    // In the very first version of this editor, we saved the data as JSON.
+    // However, we no longer save the data as JSON.
+    // This may be removed at some point in the future.
+    try {
+      const data = JSON.parse(text);
+      if (data.hasOwnProperty('lanes')) {
+        console.log('Parsed data from JSON.');
+        return data;
+      }
+    } catch (err) {
+      /* Do Nothing */
+    }
+    try {
+      return parseMarkdown(text);
+    } catch {
+      console.log('Could not parse data from Markdown.');
+      const textByLine = text.split('\n');
+      return {
+        ...initialState,
+        parsingErrors: textByLine.map((lineText, lineIndex) => ({
+          lineText,
+          lineIndex,
+          message: 'Complete Markdown parsing failure',
+        })),
+      };
+    }
+  }
+
   configureEditorKit = () => {
     let delegate = new EditorKitDelegate({
       /** This loads every time a different note is loaded */
       setEditorRawText: (text: string) => {
-        // TODO: handle failures to parse
-        const parsedBoardData = (() => {
-          try {
-            const data = JSON.parse(text);
-            if (data.hasOwnProperty('lanes')) {
-              return data;
-            }
-          } catch (err) {
-            console.log('Could not parse note as JSON, trying Markdown');
-            const data = convertMarkdownToBoardData(text);
-            return data;
-          }
-          return { lanes: [] };
-        })();
+        const newState = this.parseText(text);
         this.setState({
           ...initialState,
-          boardData: parsedBoardData,
+          ...newState,
         });
       },
       clearUndoHistory: () => {},
@@ -63,17 +83,24 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   };
 
   handleDataChange = (boardData: KanbanBoard) => {
-    const markdown = convertBoardDataToMarkdown(boardData);
-    this.saveNote(markdown);
     if (typeof boardData === 'string') {
-      const newBoardData = infuseBoardData(
-        convertMarkdownToBoardData(boardData)
-      );
-      this.setState({ boardData: newBoardData });
+      this.parseText(boardData);
+      const newState = this.parseText(boardData);
+      this.setState({
+        ...this.state,
+        ...newState,
+      });
       console.log('Convert board data from markdown and infuse');
-    } else if (boardData.lanes.length === 0 || boardData.lanes[0].id) {
+    } else if (boardData.lanes.length === 0) {
       this.setState({ boardData });
-      console.log('No need to infuse board data');
+    } else if (boardData.lanes[0].id) {
+      // The only time we should save is when a change ACTUALLY happened.
+      this.setState({ boardData });
+      const markdown = convertStateToMarkdown({
+        ...this.state,
+        boardData,
+      });
+      this.saveNote(markdown);
     } else {
       // If the board was saved without IDs, we need to repopulate those IDs.
       // This should only happen when first loading a note.

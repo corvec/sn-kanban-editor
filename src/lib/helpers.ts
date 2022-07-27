@@ -19,6 +19,7 @@ const cleanupBoardObj = <T extends object>(obj: T): T =>
   removeFromObject('currentPage')(
     removeFromObject('laneId')(removeFromObject('id')(obj))
   ) as T;
+
 export const cleanupBoardData = (boardData: KanbanBoard): KanbanBoard => ({
   ...cleanupBoardObj(boardData),
   lanes: boardData.lanes.map((lane) => ({

@@ -1,5 +1,5 @@
 import { KanbanBoard } from '../../types/react-trello';
-import { convertMarkdownToBoardData } from './convertMarkdownToBoardData';
+import { parseMarkdown } from './parseMarkdown';
 
 test('converts simple markdown file', () => {
   const input = `# Lane 1
@@ -14,8 +14,8 @@ test('converts simple markdown file', () => {
       },
     ],
   };
-  const result = convertMarkdownToBoardData(input);
-  expect(result).toEqual(expectedResult);
+  const { boardData } = parseMarkdown(input);
+  expect(boardData).toEqual(expectedResult);
 });
 
 test('converts markdown with cards with comments', () => {
@@ -72,6 +72,6 @@ test('converts markdown with cards with comments', () => {
       },
     ],
   };
-  const result = convertMarkdownToBoardData(input);
-  expect(result).toEqual(expectedResult);
+  const { boardData } = parseMarkdown(input);
+  expect(boardData).toEqual(expectedResult);
 });

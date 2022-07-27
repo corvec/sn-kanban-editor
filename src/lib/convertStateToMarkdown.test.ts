@@ -1,8 +1,13 @@
-import { convertBoardDataToMarkdown } from './convertBoardDataToMarkdown';
+import { convertStateToMarkdown } from './convertStateToMarkdown';
 import { KanbanBoard } from '../../types/react-trello';
 
+const defaultState = {
+  editorConfig: {},
+  parsingErrors: [],
+};
+
 test('converts simple board data', () => {
-  const input = {
+  const boardData = {
     lanes: [
       {
         title: 'Lane 1',
@@ -20,12 +25,12 @@ test('converts simple board data', () => {
 * Card 1
   * Description: desc
   * Label: label`;
-  const result = convertBoardDataToMarkdown(input);
-  expect(result).toEqual(expectedOutput);
+  const result = convertStateToMarkdown({ ...defaultState, boardData });
+  expect(result.trim()).toEqual(expectedOutput);
 });
 
 test('converts JSON with cards with comments', () => {
-  const input: KanbanBoard = {
+  const boardData: KanbanBoard = {
     lanes: [
       {
         title: 'Lane 1',
@@ -78,6 +83,6 @@ test('converts JSON with cards with comments', () => {
   * Label: label 3
   * Comments:
     * Comment 6`;
-  const result = convertBoardDataToMarkdown(input);
-  expect(result).toEqual(expectedResult);
+  const result = convertStateToMarkdown({ ...defaultState, boardData });
+  expect(result.trim()).toEqual(expectedResult);
 });
