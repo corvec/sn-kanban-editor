@@ -15,14 +15,19 @@ enum Scope {
 
 const defaultConfig = {};
 
+/**
+ * Parses our Markdown code and transforms it into a state object
+ * @param {string} markdown
+ * @return {EditorInterface}
+ */
 export const parseMarkdown = (markdown: string): EditorInterface => {
   const boardData: KanbanBoard = {
     lanes: [],
   };
   const lines = markdown.split('\n');
-  let laneIndex = -1;
-  let cardIndex = -1;
-  let propIndex = -1;
+  let laneIndex = -1; // a value of -1 denotes that we aren't in a lane
+  let cardIndex = -1; // or card
+  let propIndex = -1; // or property
   let scope = Scope.Board;
   const editorConfig: EditorConfig = defaultConfig;
   const parsingErrors: ParsingErrors[] = [];
