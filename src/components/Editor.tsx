@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
+import EditorKit, { EditorKitDelegate } from '@standardnotes/editor-kit';
 import { ModalProvider } from 'react-modal-hook';
 import { KanbanBoard } from '../../types/react-trello';
 import { infuseBoardData } from '../lib/helpers';
@@ -62,7 +62,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
   }
 
   configureEditorKit = () => {
-    let delegate = new EditorKitDelegate({
+    const delegate: EditorKitDelegate = {
       /** This loads every time a different note is loaded */
       setEditorRawText: (text: string) => {
         const newState = this.parseText(text);
@@ -72,13 +72,11 @@ export default class Editor extends React.Component<{}, EditorInterface> {
         });
       },
       clearUndoHistory: () => {},
-      getElementsBySelector: () => [],
-    });
+      handleRequestForContentHeight: () => undefined,
+    };
 
-    this.editorKit = new EditorKit({
-      delegate: delegate,
+    this.editorKit = new EditorKit(delegate, {
       mode: 'plaintext',
-      supportsFilesafe: false,
     });
   };
 
