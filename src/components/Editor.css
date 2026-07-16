@@ -136,6 +136,285 @@
   fill: var(--sn-stylekit-danger-color);
 }
 
+/* Toolbar */
+
+#sn-component .board-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  flex-wrap: wrap;
+  padding: 6px 10px;
+  background-color: var(--sn-stylekit-contrast-background-color);
+  color: var(--sn-stylekit-contrast-foreground-color);
+  border-bottom: 1px solid var(--sn-stylekit-contrast-border-color);
+}
+#sn-component .board-toolbar input,
+#sn-component .board-toolbar select,
+#sn-component .board-toolbar button {
+  color: var(--sn-stylekit-paragraph-text-color);
+  background-color: var(--sn-stylekit-background-color);
+  border: 1px solid var(--sn-stylekit-input-border-color);
+  border-radius: 3px;
+  padding: 5px 8px;
+  min-height: 32px;
+  box-sizing: border-box;
+}
+#sn-component .toolbar-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+#sn-component .toolbar-matches {
+  font-size: 0.9em;
+  color: var(--sn-stylekit-info-color);
+  white-space: nowrap;
+}
+#sn-component .toolbar-bulk-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+#sn-component .toolbar-bulk-actions button {
+  cursor: pointer;
+  color: var(--sn-stylekit-danger-color);
+}
+#sn-component .toolbar-spacer {
+  flex: 1;
+}
+#sn-component .toolbar-settings-button {
+  cursor: pointer;
+  line-height: 0;
+  border: 0 !important;
+  background: transparent !important;
+  color: var(--sn-stylekit-contrast-foreground-color) !important;
+}
+#sn-component .toolbar-settings-button:hover {
+  color: var(--sn-stylekit-info-color) !important;
+}
+
+/* Board settings modal */
+
+.ReactModalPortal .board-settings h2 {
+  margin-top: 0;
+}
+.ReactModalPortal .board-settings h3 {
+  margin-bottom: 0.4em;
+}
+.ReactModalPortal .board-settings section {
+  margin-bottom: 1.2em;
+}
+.ReactModalPortal .settings-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  cursor: pointer;
+}
+.ReactModalPortal .settings-hint {
+  font-size: 0.85em;
+  color: var(--sn-stylekit-neutral-color);
+  margin: 0.2em 0 0.6em;
+}
+.ReactModalPortal .settings-theme-colors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+  margin-top: 0.6em;
+}
+.ReactModalPortal .settings-tag-row,
+.ReactModalPortal .settings-field-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  margin-bottom: 0.4em;
+  flex-wrap: wrap;
+}
+.ReactModalPortal .settings-tag-row label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: 0.85em;
+}
+.ReactModalPortal .settings-add-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-top: 0.6em;
+}
+.ReactModalPortal .settings-add-row button {
+  cursor: pointer;
+  padding: 6px 12px;
+  border: 1px solid var(--sn-stylekit-secondary-border-color);
+  border-radius: 3px;
+  background-color: var(--sn-stylekit-secondary-background-color);
+  color: var(--sn-stylekit-secondary-foreground-color);
+}
+.ReactModalPortal .modal-cancel-button {
+  padding: 8px 16px;
+  min-height: 40px;
+  cursor: pointer;
+  margin-right: 0.5em;
+  border: 1px solid var(--sn-stylekit-secondary-border-color);
+  border-radius: 3px;
+  background-color: var(--sn-stylekit-neutral-color);
+  color: var(--sn-stylekit-neutral-contrast-color);
+}
+
+/* Card modal */
+
+.ReactModalPortal .card-modal input,
+.ReactModalPortal .card-modal textarea,
+.ReactModalPortal .card-modal select {
+  color: var(--sn-stylekit-paragraph-text-color);
+  background-color: var(--sn-stylekit-background-color);
+  border: 1px solid var(--sn-stylekit-input-border-color);
+  border-radius: 3px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+}
+.ReactModalPortal .modal-title-input {
+  width: 100%;
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 0.5em;
+}
+.ReactModalPortal .modal-label-input {
+  width: 100%;
+}
+.ReactModalPortal .modal-description-input {
+  width: 100%;
+  resize: vertical;
+}
+.ReactModalPortal .modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+}
+.ReactModalPortal .modal-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+.ReactModalPortal .modal-tag-remove {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+.ReactModalPortal .modal-new-tag-input {
+  width: 7em;
+}
+.ReactModalPortal .modal-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+.ReactModalPortal .modal-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.ReactModalPortal .modal-field-name {
+  min-width: 8em;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+.ReactModalPortal .modal-field-ref-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  font-size: 0.85em;
+  color: var(--sn-stylekit-neutral-color);
+}
+.ReactModalPortal .modal-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+.ReactModalPortal .modal-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 6px 12px;
+  min-height: 36px;
+  cursor: pointer;
+  border: 1px solid var(--sn-stylekit-secondary-border-color);
+  border-radius: 3px;
+  background-color: var(--sn-stylekit-secondary-background-color);
+  color: var(--sn-stylekit-secondary-foreground-color);
+}
+.ReactModalPortal .modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.ReactModalPortal .modal-comment {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  background-color: var(--sn-stylekit-secondary-contrast-background-color);
+  color: var(--sn-stylekit-secondary-contrast-foreground-color);
+  border: 1px solid var(--sn-stylekit-secondary-contrast-border-color);
+  margin-bottom: 1em;
+  padding: 0.5em;
+}
+.ReactModalPortal .modal-comment-text {
+  flex: 1;
+  word-break: break-word;
+}
+.ReactModalPortal .modal-comment-input {
+  flex: 1;
+}
+.ReactModalPortal .modal-icon-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px;
+  color: inherit;
+}
+.ReactModalPortal .modal-new-comment {
+  display: flex;
+  gap: 0.5em;
+}
+.ReactModalPortal .modal-new-comment input {
+  flex: 1;
+}
+.ReactModalPortal .modal-history-toggle {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--sn-stylekit-info-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 4px 0;
+}
+.ReactModalPortal .modal-history ul {
+  margin: 0.5em 0 0;
+  padding-left: 1.5em;
+  font-size: 0.9em;
+  color: var(--sn-stylekit-neutral-color);
+}
+.ReactModalPortal .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+.ReactModalPortal .modal-save-button {
+  padding: 8px 16px;
+  min-height: 40px;
+  cursor: pointer;
+  border: 1px solid var(--sn-stylekit-secondary-contrast-border-color);
+  border-radius: 3px;
+  background-color: var(--sn-stylekit-info-color);
+  color: var(--sn-stylekit-info-contrast-color);
+}
+
 /* Custom card */
 
 #sn-component .markdown-editable {

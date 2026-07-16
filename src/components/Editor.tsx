@@ -1,14 +1,20 @@
 import React from 'react';
 import EditorKit, { EditorKitDelegate } from '@standardnotes/editor-kit';
 import { ModalProvider } from 'react-modal-hook';
-import { KanbanBoard } from '../../types/react-trello';
+import { KanbanBoard, KanbanCard } from '../../types/react-trello';
 import { infuseBoardData } from '../lib/helpers';
 import { parseMarkdown } from '../lib/parseMarkdown';
 import { isTrelloExport, parseTrelloJson } from '../lib/parseTrelloJson';
 import { convertStateToMarkdown } from '../lib/convertStateToMarkdown';
+import { stampDateTime } from '../lib/datetime';
 import './Editor.css';
-import { EditorInterface } from '../../types/editor';
+import { EditorConfig, EditorInterface } from '../../types/editor';
 import { EditorInternal } from './EditorInternal';
+
+interface PendingHistoryEntry {
+  cardId: string;
+  entry: string;
+}
 
 const initialState: EditorInterface = {
   printUrl: false,
@@ -24,6 +30,14 @@ let keyMap = new Map();
 export default class Editor extends React.Component<{}, EditorInterface> {
   editorKit: any;
 
+  /**
+   * History entries recorded by react-trello callbacks (card added, card
+   * dragged across lanes, inline edits). The callbacks fire before
+   * onDataChange delivers the updated board, so the entries are held here
+   * and merged into the matching cards in handleDataChange.
+   */
+  pendingHistory: PendingHistoryEntry[] = [];
+
   constructor(props: EditorInterface) {
     super(props);
     this.configureEditorKit();
@@ -32,6 +46,90 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       ...props,
     };
   }
+
+  historyEnabled = (): boolean => Boolean(this.state.editorConfig?.history);
+
+  laneTitle = (laneId: string): string =>
+    this.state.boardData.lanes.find((lane) => lane.id === laneId)?.title ??
+    'unknown';
+
+  onCardAdd = (card: KanbanCard, laneId: string) => {
+    if (!this.historyEnabled() || !card.id) {
+      return;
+    }
+    this.pendingHistory.push({
+      cardId: card.id,
+      entry: stampDateTime(`Created in "${this.laneTitle(laneId)}"`),
+    });
+  };
+
+  onCardMoveAcrossLanes = (
+    fromLaneId: string,
+    toLaneId: string,
+    cardId: string
+  ) => {
+    if (!this.historyEnabled() || fromLaneId === toLaneId) {
+      return;
+    }
+    this.pendingHistory.push({
+      cardId,
+      entry: stampDateTime(
+        `Moved from "${this.laneTitle(fromLaneId)}" to "${this.laneTitle(
+          toLaneId
+        )}"`
+      ),
+    });
+  };
+
+  /** Fires on inline card edits (title/label/description on the card) */
+  onCardUpdate = (laneId: string, card: Partial<KanbanCard>) => {
+    if (!this.historyEnabled() || !card.id) {
+      return;
+    }
+    const oldCard = this.state.boardData.lanes
+      .find((lane) => lane.id === laneId)
+      ?.cards.find((laneCard) => laneCard.id === card.id);
+    if (!oldCard) {
+      return;
+    }
+    if (card.title !== undefined && card.title !== oldCard.title) {
+      this.pendingHistory.push({
+        cardId: card.id,
+        entry: stampDateTime('Title edited'),
+      });
+    }
+    if (
+      card.description !== undefined &&
+      card.description !== (oldCard.description ?? '')
+    ) {
+      this.pendingHistory.push({
+        cardId: card.id,
+        entry: stampDateTime('Description edited'),
+      });
+    }
+  };
+
+  mergePendingHistory = (boardData: KanbanBoard): KanbanBoard => {
+    if (this.pendingHistory.length === 0) {
+      return boardData;
+    }
+    const pending = this.pendingHistory;
+    this.pendingHistory = [];
+    return {
+      ...boardData,
+      lanes: boardData.lanes.map((lane) => ({
+        ...lane,
+        cards: lane.cards.map((card) => {
+          const entries = pending
+            .filter((item) => item.cardId === card.id)
+            .map((item) => item.entry);
+          return entries.length > 0
+            ? { ...card, history: [...(card.history ?? []), ...entries] }
+            : card;
+        }),
+      })),
+    };
+  };
 
   parseText(text: string): EditorInterface {
     // In the very first version of this editor, we saved the data as JSON.
@@ -98,10 +196,11 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       this.setState({ boardData });
     } else if (boardData.lanes[0].id) {
       // The only time we should save is when a change ACTUALLY happened.
-      this.setState({ boardData });
+      const withHistory = this.mergePendingHistory(boardData);
+      this.setState({ boardData: withHistory });
       const markdown = convertStateToMarkdown({
         ...this.state,
-        boardData,
+        boardData: withHistory,
       });
       this.saveNote(markdown);
     } else {
@@ -111,6 +210,12 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       this.setState({ boardData: infusedBoardData });
       console.log('Infused board data');
     }
+  };
+
+  handleConfigChange = (editorConfig: EditorConfig) => {
+    this.setState({ editorConfig }, () => {
+      this.saveNote(convertStateToMarkdown(this.state));
+    });
   };
 
   saveNote = (text: string) => {
@@ -148,6 +253,10 @@ export default class Editor extends React.Component<{}, EditorInterface> {
           boardData={this.state.boardData}
           editorConfig={this.state.editorConfig}
           handleDataChange={this.handleDataChange}
+          handleConfigChange={this.handleConfigChange}
+          onCardAdd={this.onCardAdd}
+          onCardUpdate={this.onCardUpdate}
+          onCardMoveAcrossLanes={this.onCardMoveAcrossLanes}
         />
       </ModalProvider>
     );
