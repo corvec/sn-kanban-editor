@@ -5,14 +5,15 @@ import {
   EditorInterface,
   ParsingErrors,
 } from '../../types/editor';
+import { CONFIG_BLOCK_START, CONFIG_BLOCK_END } from './parseMarkdown';
 
 export const convertStateToMarkdown = (state: EditorInterface): string => {
   const { boardData, editorConfig, parsingErrors } = state;
 
-  const boardText = convertBoardData(boardData);
   const configText = convertEditorConfig(editorConfig);
+  const boardText = convertBoardData(boardData);
   const errorText = convertParsingErrors(parsingErrors);
-  return `${boardText}${configText}${errorText}`;
+  return [configText, boardText, errorText].filter(Boolean).join('\n');
 };
 
 const convertParsingErrors = (parsingErrors: ParsingErrors[]): string => {
@@ -21,8 +22,14 @@ const convertParsingErrors = (parsingErrors: ParsingErrors[]): string => {
 };
 
 const convertEditorConfig = (config: EditorConfig): string => {
-  const configText = '';
-  return addNewlineIfNotEmpty(configText);
+  if (!config || Object.keys(config).length === 0) {
+    return '';
+  }
+  return `${CONFIG_BLOCK_START}\n${JSON.stringify(
+    config,
+    null,
+    2
+  )}\n${CONFIG_BLOCK_END}\n`;
 };
 
 const convertBoardData = (boardData: KanbanBoard): string => {
@@ -32,20 +39,35 @@ const convertBoardData = (boardData: KanbanBoard): string => {
   return addNewlineIfNotEmpty(boardText);
 };
 
+const convertSublist = (name: string, entries?: Array<string>): string => {
+  if (!entries || entries.length === 0) {
+    return '';
+  }
+  const lines = entries.map((entry) => `    * ${entry}`).join('\n');
+  return `\n  * ${name}:\n${lines}`;
+};
+
 const convertCards = (cards: Array<KanbanCard>): string => {
   const cardFields = ['description', 'label'];
   return cards
     .map((card) => {
-      const fieldData = cardFields
+      const parts: string[] = [];
+      cardFields
         .map(fieldToMarkdown(card))
         .filter((_) => _)
-        .join('\n');
-      const commentData = (card.comments || [])
-        .map((comment) => `    * ${comment}`)
-        .join('\n');
-      return `* ${card.title}${fieldData && '\n'}${fieldData}${
-        commentData && '\n  * Comments:\n'
-      }${commentData}`;
+        .forEach((fieldText) => parts.push(`\n${fieldText}`));
+      if (card.tags && card.tags.length > 0) {
+        parts.push(`\n  * Tags: ${card.tags.map((t) => t.title).join(', ')}`);
+      }
+      Object.entries(card.fields ?? {}).forEach(([key, value]) => {
+        parts.push(`\n  * ${key}: ${value}`);
+      });
+      if (card.stableId) {
+        parts.push(`\n  * Id: ${card.stableId}`);
+      }
+      parts.push(convertSublist('Comments', card.comments));
+      parts.push(convertSublist('History', card.history));
+      return `* ${card.title}${parts.join('')}`;
     })
     .join('\n');
 };
