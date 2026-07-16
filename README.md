@@ -62,23 +62,22 @@ https://corvec.github.io/sn-kanban-editor/ext.json
 Boards are stored as human-readable Markdown. Board-level settings live in an
 HTML comment at the top of the note (invisible in rendered Markdown):
 
-```markdown
+```text
 <!-- kanban:config
 { "history": true, "tags": { "Pink": { "bgcolor": "pink" } } }
 -->
 
 # Lane title
-
-- Card title
-  - Description: supports **markdown** and \n-escaped newlines
-  - Label: tomorrow
-  - Tags: Pink, Urgent
-  - Story Points: 5
-  - Id: 1a2b3c4d
-  - Comments:
-    - [2026-07-16 10:00] A datetime-stamped comment
-  - History:
-    - [2026-07-15 09:00] Created in "Lane title"
+* Card title
+  * Description: supports **markdown** and \n-escaped newlines
+  * Label: tomorrow
+  * Tags: Pink, Urgent
+  * Story Points: 5
+  * Id: 1a2b3c4d
+  * Comments:
+    * [2026-07-16 10:00] A datetime-stamped comment
+  * History:
+    * [2026-07-15 09:00] Created in "Lane title"
 ```
 
 Any other `Key: value` line under a card is a custom field. The `Id` line only
