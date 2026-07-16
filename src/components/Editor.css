@@ -135,3 +135,114 @@
   stroke: var(--sn-stylekit-danger-contrast-color);
   fill: var(--sn-stylekit-danger-color);
 }
+
+/* Custom card */
+
+#sn-component .markdown-editable {
+  cursor: text;
+  min-height: 1.2em;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+#sn-component .markdown-editable-empty {
+  color: var(--sn-stylekit-neutral-color);
+  font-style: italic;
+}
+#sn-component .markdown-editable-input {
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  font: inherit;
+  color: var(--sn-stylekit-paragraph-text-color);
+  background-color: var(--sn-stylekit-secondary-contrast-background-color);
+  border: 1px solid var(--sn-stylekit-input-border-color);
+  border-radius: 3px;
+}
+
+#sn-component .card-delete-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 0;
+  color: var(--sn-stylekit-neutral-color);
+}
+#sn-component .card-delete-button:hover {
+  color: var(--sn-stylekit-danger-color);
+}
+
+#sn-component .card-fields {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--sn-stylekit-neutral-color);
+}
+#sn-component .card-field-name {
+  font-weight: bold;
+}
+
+#sn-component .card-details-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75em;
+  width: 100%;
+  margin-top: 8px;
+  min-height: 40px;
+  padding: 8px;
+  border: 1px solid var(--sn-stylekit-secondary-border-color);
+  border-radius: 3px;
+  background-color: var(--sn-stylekit-contrast-background-color);
+  color: var(--sn-stylekit-info-color);
+  font-size: 13px;
+  cursor: pointer;
+}
+#sn-component .card-details-button:hover {
+  border-color: var(--sn-stylekit-info-color);
+}
+#sn-component .card-details-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  color: var(--sn-stylekit-neutral-color);
+}
+
+/* Search highlighting */
+
+#sn-component .search-match {
+  box-shadow: 0 0 0 2px var(--sn-stylekit-info-color);
+}
+#sn-component .search-dim {
+  opacity: 0.45;
+}
+
+/* Mobile */
+
+@media (pointer: coarse) {
+  /* Bigger touch targets */
+  #sn-component .card-details-button {
+    min-height: 44px;
+  }
+  #sn-component .card-delete-button {
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  /*
+   * iOS Safari zooms the page when focusing inputs with font-size < 16px.
+   * Keeping every text input at 16px prevents the jarring auto-zoom.
+   */
+  #sn-component textarea,
+  #sn-component input,
+  #sn-component .markdown-editable-input,
+  .ReactModalPortal textarea,
+  .ReactModalPortal input,
+  .ReactModalPortal select {
+    font-size: 16px !important;
+  }
+}
+
+/* Momentum scrolling for the board on iOS */
+#sn-component .react-trello-board {
+  -webkit-overflow-scrolling: touch;
+}

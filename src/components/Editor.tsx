@@ -14,7 +14,7 @@ const initialState: EditorInterface = {
   boardData: {
     lanes: [],
   },
-  editorConfig: '',
+  editorConfig: {},
   parsingErrors: [],
 };
 
@@ -141,6 +141,7 @@ export default class Editor extends React.Component<{}, EditorInterface> {
         <EditorInternal
           printUrl={this.state.printUrl}
           boardData={this.state.boardData}
+          editorConfig={this.state.editorConfig}
           handleDataChange={this.handleDataChange}
         />
       </ModalProvider>

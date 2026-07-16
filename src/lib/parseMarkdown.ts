@@ -27,7 +27,6 @@ export const parseMarkdown = (markdown: string): EditorInterface => {
   const lines = markdown.split('\n');
   let laneIndex = -1; // a value of -1 denotes that we aren't in a lane
   let cardIndex = -1; // or card
-  let propIndex = -1; // or property
   let scope = Scope.Board;
   const editorConfig: EditorConfig = defaultConfig;
   const parsingErrors: ParsingErrors[] = [];

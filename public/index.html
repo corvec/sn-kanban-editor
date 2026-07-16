@@ -4,7 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!--
+    maximum-scale=1 prevents iOS Safari from auto-zooming when an input is
+    focused; iOS still allows the user to pinch-zoom manually regardless.
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description"
     content="Template for building editors for Standard Notes using Create React App and TypeScript" />

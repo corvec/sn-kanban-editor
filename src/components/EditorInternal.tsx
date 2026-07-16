@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Board from 'react-trello';
 import ReactModal from 'react-modal';
 import { KanbanCardModal } from './KanbanCardModal';
+import { KanbanCard } from './KanbanCard';
+import { BoardContext } from './BoardContext';
 import { useModal } from 'react-modal-hook';
 
 export enum HtmlElementId {
@@ -13,7 +15,12 @@ export enum HtmlClassName {
   snComponent = 'sn-component',
 }
 
-export const EditorInternal = ({ printUrl, boardData, handleDataChange }) => {
+export const EditorInternal = ({
+  printUrl,
+  boardData,
+  editorConfig,
+  handleDataChange,
+}) => {
   const [card, setCard] = useState({
     cardData: {
       title: '',
@@ -52,29 +59,44 @@ export const EditorInternal = ({ printUrl, boardData, handleDataChange }) => {
     setCard(card);
     showModal();
   };
+
+  const contextValue = useMemo(
+    () => ({
+      config: editorConfig ?? {},
+      searchState: null,
+    }),
+    [editorConfig]
+  );
+
   return (
-    <div
-      className={`${HtmlClassName.snComponent}${printUrl ? ' print-url' : ''}`}
-      id={HtmlElementId.snComponent}
-      tabIndex={0}
-    >
-      <Board
-        id={HtmlElementId.board}
-        className={HtmlClassName.board}
-        data={boardData}
-        canAddLanes
-        editable
-        editLaneTitle
-        eventBusHandle={setEventBus}
-        onCardClick={(cardId, metadata, laneId) => {
-          const cardData = boardData.lanes
-            .find((lane) => lane.id === laneId)
-            .cards.find((card) => card.id === cardId);
-          console.log(`Opening card in modal: ${JSON.stringify(cardData)}`);
-          openModal({ cardId, cardData, metadata, laneId });
-        }}
-        onDataChange={handleDataChange}
-      />
-    </div>
+    <BoardContext.Provider value={contextValue}>
+      <div
+        className={`${HtmlClassName.snComponent}${
+          printUrl ? ' print-url' : ''
+        }`}
+        id={HtmlElementId.snComponent}
+        tabIndex={0}
+      >
+        <Board
+          id={HtmlElementId.board}
+          className={HtmlClassName.board}
+          data={boardData}
+          components={{ Card: KanbanCard }}
+          canAddLanes
+          editable
+          editLaneTitle
+          draggable
+          collapsibleLanes
+          eventBusHandle={setEventBus}
+          onCardClick={(cardId, metadata, laneId) => {
+            const cardData = boardData.lanes
+              .find((lane) => lane.id === laneId)
+              .cards.find((card) => card.id === cardId);
+            openModal({ cardId, cardData, metadata, laneId });
+          }}
+          onDataChange={handleDataChange}
+        />
+      </div>
+    </BoardContext.Provider>
   );
 };

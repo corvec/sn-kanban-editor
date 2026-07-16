@@ -46,7 +46,7 @@ const customStyles = {
 };
 
 export const KanbanCardModal = ({ card, hideModal, setComments }) => {
-  const { title, description, label, comments } = card;
+  const { title, description, comments } = card;
   const [newComment, setNewComment] = useState('');
   const [updatedComments, setUpdatedComments] = useState(comments || []);
   const addComment = () => {
