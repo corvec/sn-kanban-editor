@@ -5,7 +5,11 @@ import {
   EditorInterface,
   ParsingErrors,
 } from '../../types/editor';
-import { CONFIG_BLOCK_START, CONFIG_BLOCK_END } from './parseMarkdown';
+import {
+  CONFIG_BLOCK_START,
+  CONFIG_BLOCK_END,
+  escapeMultiline,
+} from './parseMarkdown';
 
 export const convertStateToMarkdown = (state: EditorInterface): string => {
   const { boardData, editorConfig, parsingErrors } = state;
@@ -73,7 +77,13 @@ const convertCards = (cards: Array<KanbanCard>): string => {
 };
 
 const fieldToMarkdown = (card: KanbanCard) => (fieldName: string): string =>
-  card[fieldName] ? `  * ${titleCase(fieldName)}: ${card[fieldName]}` : null;
+  card[fieldName]
+    ? `  * ${titleCase(fieldName)}: ${
+        fieldName === 'description'
+          ? escapeMultiline(card[fieldName])
+          : card[fieldName]
+      }`
+    : null;
 
 const addNewlineIfNotEmpty = (text: string): string => {
   return text ? `${text}\n` : '';

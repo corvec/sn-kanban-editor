@@ -4,6 +4,7 @@ import { ModalProvider } from 'react-modal-hook';
 import { KanbanBoard } from '../../types/react-trello';
 import { infuseBoardData } from '../lib/helpers';
 import { parseMarkdown } from '../lib/parseMarkdown';
+import { isTrelloExport, parseTrelloJson } from '../lib/parseTrelloJson';
 import { convertStateToMarkdown } from '../lib/convertStateToMarkdown';
 import './Editor.css';
 import { EditorInterface } from '../../types/editor';
@@ -41,6 +42,10 @@ export default class Editor extends React.Component<{}, EditorInterface> {
       if (data.hasOwnProperty('lanes')) {
         console.log('Parsed data from JSON.');
         return data;
+      }
+      if (isTrelloExport(data)) {
+        console.log('Parsed data from a Trello JSON export.');
+        return parseTrelloJson(data);
       }
     } catch (err) {
       /* Do Nothing */

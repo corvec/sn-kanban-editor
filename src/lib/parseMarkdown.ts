@@ -33,6 +33,16 @@ const RESERVED_FIELD_KEYS = [
 const CUSTOM_FIELD_LINE = /^ {2}\* ([^:]+): (.*)$/;
 
 /**
+ * Descriptions may span multiple lines; they are stored on a single
+ * markdown line with newlines escaped as "\n" (and backslashes as "\\").
+ */
+export const escapeMultiline = (text: string): string =>
+  text.replace(/\\/g, '\\\\').replace(/\n/g, '\\n');
+
+export const unescapeMultiline = (text: string): string =>
+  text.replace(/\\(\\|n)/g, (_, char) => (char === 'n' ? '\n' : '\\'));
+
+/**
  * Parses our Markdown code and transforms it into a state object
  * @param {string} markdown
  * @return {EditorInterface}
@@ -124,7 +134,7 @@ export const parseMarkdown = (markdown: string): EditorInterface => {
     } else if (line.toLowerCase().startsWith('  * description: ')) {
       const card = currentCard();
       if (card) {
-        card.description = line.slice(17);
+        card.description = unescapeMultiline(line.slice(17));
       }
     } else if (line.toLowerCase().startsWith('  * label: ')) {
       const card = currentCard();
