@@ -3,7 +3,7 @@
   "name": "Kanban Editor (Beta)",
   "content_type": "SN|Component",
   "area": "editor-editor",
-  "version": "0.6.0-beta.1",
+  "version": "0.6.0-beta.2",
   "description": "Beta build of the Kanban board editor for Standard Notes using react-trello",
   "url": "https://corvec.github.io/sn-kanban-editor/beta/index.html",
   "latest_url": "https://corvec.github.io/sn-kanban-editor/beta/ext.beta.json",
