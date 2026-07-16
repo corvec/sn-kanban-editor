@@ -41,8 +41,48 @@ https://corvec.github.io/sn-kanban-editor/ext.json
 
 ## Features
 
-1. Manage cards with titles, descriptions, and labels
-2. Drag and drop the cards between different "lanes"
+1. Manage cards with titles, descriptions, labels, tags, and custom fields
+2. Drag and drop cards between different "lanes"; drag lanes to reorder them; collapse lanes
+3. Inline Markdown formatting (`**bold**`, `*italic*`, `` `code` ``, `~~strikethrough~~`, links)
+   in titles, descriptions, and comments — click any of them on a card to edit in place
+4. A details view per card (the **Details** button) for editing everything,
+   adding/editing datetime-stamped comments, sending the card to another column,
+   and cloning the card
+5. Search with highlighting — all fields or a specific one — plus bulk
+   move/delete of the matching cards
+6. Board settings (gear icon): optional per-card history tracking (created,
+   moved, edited), custom color themes (defaults to your Standard Notes theme),
+   tag styling, and custom field definitions (text, number, date, card reference)
+7. Import boards from Trello: paste a Trello JSON export into a new note and it
+   loads as a board (lists, cards, labels with colors, due dates, comments);
+   it is saved back as Markdown after your first change
+
+### Note format
+
+Boards are stored as human-readable Markdown. Board-level settings live in an
+HTML comment at the top of the note (invisible in rendered Markdown):
+
+```markdown
+<!-- kanban:config
+{ "history": true, "tags": { "Pink": { "bgcolor": "pink" } } }
+-->
+
+# Lane title
+
+- Card title
+  - Description: supports **markdown** and \n-escaped newlines
+  - Label: tomorrow
+  - Tags: Pink, Urgent
+  - Story Points: 5
+  - Id: 1a2b3c4d
+  - Comments:
+    - [2026-07-16 10:00] A datetime-stamped comment
+  - History:
+    - [2026-07-15 09:00] Created in "Lane title"
+```
+
+Any other `Key: value` line under a card is a custom field. The `Id` line only
+appears when another card references this one.
 
 ## Project Roadmap
 
