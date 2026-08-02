@@ -97,3 +97,26 @@ describe('deleteCards', () => {
     expect(result.lanes[1].cards).toEqual([]);
   });
 });
+
+describe('label-based tags in search', () => {
+  const labeledCard = {
+    id: 'c9',
+    title: 'Labeled card',
+    label: 'Pink, tomorrow',
+  };
+  const known = new Set(['Pink']);
+
+  it('matches label parts that are known tags under the tags field', () => {
+    expect(cardMatchesSearch(labeledCard, 'pink', ['tags'], known)).toBe(true);
+  });
+
+  it('does not match label parts that are not known tags under tags', () => {
+    expect(cardMatchesSearch(labeledCard, 'tomorrow', ['tags'], known)).toBe(
+      false
+    );
+    // ...but they still match under the label field
+    expect(cardMatchesSearch(labeledCard, 'tomorrow', ['label'], known)).toBe(
+      true
+    );
+  });
+});

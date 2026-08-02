@@ -193,6 +193,11 @@ export const BoardSettingsModal = ({
 
         <section>
           <h3>Tags</h3>
+          <p className="settings-hint">
+            Comma-separated values in a card's label (upper right) that match a
+            tag defined here are styled and searchable as tags — the label
+            itself stays where it always was in the note.
+          </p>
           {allTagNames.length === 0 && (
             <p className="settings-hint">
               No tags yet. Add one below or tag a card from its details view.

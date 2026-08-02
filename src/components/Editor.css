@@ -450,6 +450,13 @@
   color: var(--sn-stylekit-danger-color);
 }
 
+#sn-component .label-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: center;
+}
+
 #sn-component .card-fields {
   margin-top: 6px;
   font-size: 11px;

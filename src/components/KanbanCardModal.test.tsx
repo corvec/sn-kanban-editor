@@ -167,3 +167,31 @@ describe('KanbanCardModal', () => {
     expect(changes.history[0]).toMatch(/Title edited$/);
   });
 });
+
+describe('label-based tags in the modal', () => {
+  it('shows known-tag label parts in the tag row and removes them from the label', () => {
+    const props = setup({
+      card: { ...baseCard, label: 'Pink, tomorrow' },
+      knownTags: ['Pink'],
+    });
+    // The label part "Pink" appears as a removable tag chip
+    fireEvent.click(screen.getByTitle('Remove tag Pink'));
+    fireEvent.click(screen.getByText('Save & Close'));
+    const changes = props.updateCard.mock.calls[0][0];
+    expect(changes.label).toEqual('tomorrow');
+    expect(changes.tags).toEqual([]);
+  });
+
+  it('does not offer label-derived tags twice in the picker', () => {
+    setup({
+      card: { ...baseCard, label: 'Pink' },
+      knownTags: ['Pink', 'Green'],
+    });
+    const picker = screen.getByTitle('Add an existing tag');
+    const options = Array.from(picker.querySelectorAll('option')).map(
+      (option) => option.textContent
+    );
+    expect(options).toContain('Green');
+    expect(options).not.toContain('Pink');
+  });
+});

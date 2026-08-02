@@ -61,10 +61,17 @@ export const EditorInternal = ({
   const searchFields: SearchableField[] =
     searchField === 'all' ? [] : [searchField];
 
-  const matchedIds = useMemo(
-    () => findMatchingCardIds(boardData, query, searchFields),
+  const knownTags = useMemo(
+    () => collectKnownTags(config, boardData.lanes),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [boardData, query, searchField]
+    [editorConfig, boardData]
+  );
+  const knownTagSet = useMemo(() => new Set(knownTags), [knownTags]);
+
+  const matchedIds = useMemo(
+    () => findMatchingCardIds(boardData, query, searchFields, knownTagSet),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [boardData, query, searchField, knownTagSet]
   );
 
   const laneSummaries = boardData.lanes.map((lane) => ({
@@ -140,7 +147,7 @@ export const EditorInternal = ({
         lanes={laneSummaries}
         config={config}
         allCards={allCards}
-        knownTags={collectKnownTags(config, boardData.lanes)}
+        knownTags={knownTags}
         updateCard={(changes) => {
           eventBus.publish({
             type: 'UPDATE_CARD',
@@ -178,7 +185,7 @@ export const EditorInternal = ({
     () => (
       <BoardSettingsModal
         config={config}
-        knownTags={collectKnownTags(config, boardData.lanes)}
+        knownTags={knownTags}
         saveConfig={handleConfigChange}
         hideModal={hideSettingsModal}
       />
@@ -195,9 +202,10 @@ export const EditorInternal = ({
     () => ({
       config,
       searchState: query ? { query, fields: searchFields, matchedIds } : null,
+      knownTags: knownTagSet,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [editorConfig, query, searchField, matchedIds]
+    [editorConfig, query, searchField, matchedIds, knownTagSet]
   );
 
   /**

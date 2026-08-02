@@ -83,6 +83,12 @@ HTML comment at the top of the note (invisible in rendered Markdown):
 Any other `Key: value` line under a card is a custom field. The `Id` line only
 appears when another card references this one.
 
+Tags have historically lived in the card's `Label:` field (shown in the upper
+right of the card) as comma-separated values, and they can stay there: label
+parts that match a tag defined in Board Settings (or in use elsewhere on the
+board) are automatically styled, searchable, and manageable as tags. The
+separate `Tags:` line is optional and used e.g. by the Trello import.
+
 ## Project Roadmap
 
 Please refer to the [Projects Roadmap](https://github.com/corvec/sn-kanban-editor/projects/1)

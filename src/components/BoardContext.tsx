@@ -11,6 +11,11 @@ export interface SearchState {
 export interface BoardContextValue {
   config: EditorConfig;
   searchState: SearchState | null;
+  /**
+   * Tag titles known to the board (configured or in use). Label parts
+   * matching one of these render as tag chips on cards.
+   */
+  knownTags: Set<string>;
 }
 
 /**
@@ -22,4 +27,5 @@ export interface BoardContextValue {
 export const BoardContext = React.createContext<BoardContextValue>({
   config: {},
   searchState: null,
+  knownTags: new Set(),
 });

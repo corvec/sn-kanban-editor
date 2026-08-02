@@ -7,6 +7,8 @@ interface MarkdownEditableProps {
   onSave: (value: string) => void;
   className?: string;
   multiline?: boolean;
+  /** Custom view-mode renderer (editing still uses the raw text) */
+  renderView?: (value: string) => React.ReactNode;
 }
 
 /**
@@ -21,6 +23,7 @@ export const MarkdownEditable = ({
   onSave,
   className,
   multiline,
+  renderView,
 }: MarkdownEditableProps) => {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(value ?? '');
@@ -86,7 +89,11 @@ export const MarkdownEditable = ({
       onClick={startEditing}
       title="Click to edit"
     >
-      {value ? renderInlineMarkdown(value) : placeholder ?? ''}
+      {value
+        ? renderView
+          ? renderView(value)
+          : renderInlineMarkdown(value)
+        : placeholder ?? ''}
     </div>
   );
 };

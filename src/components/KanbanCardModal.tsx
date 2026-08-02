@@ -12,6 +12,7 @@ import {
 import { KanbanCard, KanbanTag } from '../../types/react-trello';
 import { CustomFieldDefinition, EditorConfig } from '../../types/editor';
 import { renderInlineMarkdown } from '../lib/inlineMarkdown';
+import { removeLabelTag, splitLabel } from '../lib/labelTags';
 import { resolveTagStyle } from '../lib/tagStyles';
 import { stampDateTime } from '../lib/datetime';
 
@@ -237,9 +238,30 @@ export const KanbanCardModal = ({
     setNewComment('');
   };
 
+  /**
+   * Tags historically live in the Label field (upper right of the card)
+   * as comma-separated values. Label parts that are known tags appear in
+   * the tag row alongside explicit tags; removing one edits the label.
+   */
+  const knownTagSet = new Set(knownTags);
+  const labelTags = splitLabel(label).filter((part) => knownTagSet.has(part));
+  const displayedTags: Array<{ title: string; fromLabel: boolean }> = [
+    ...tags.map((tag) => ({ title: tag.title, fromLabel: false })),
+    ...labelTags
+      .filter((part) => !tags.some((tag) => tag.title === part))
+      .map((part) => ({ title: part, fromLabel: true })),
+  ];
+
+  const removeTag = (title: string) => {
+    setTags(tags.filter((tag) => tag.title !== title));
+    if (labelTags.includes(title)) {
+      setLabel(removeLabelTag(label, title));
+    }
+  };
+
   const addTag = (tagTitle: string) => {
     const trimmed = tagTitle.trim();
-    if (!trimmed || tags.some((tag) => tag.title === trimmed)) {
+    if (!trimmed || displayedTags.some((entry) => entry.title === trimmed)) {
       return;
     }
     setTags([...tags, { title: trimmed }]);
@@ -345,19 +367,17 @@ export const KanbanCardModal = ({
 
         <div style={sectionStyle} className="modal-tags">
           <IconTag size={14} stroke={1.5} />
-          {tags.map((tag) => (
+          {displayedTags.map(({ title: tagTitle }) => (
             <span
-              key={tag.title}
+              key={tagTitle}
               className="modal-tag"
-              style={resolveTagStyle(tag, config)}
+              style={resolveTagStyle({ title: tagTitle }, config)}
             >
-              {tag.title}
+              {tagTitle}
               <button
                 className="modal-tag-remove"
-                title={`Remove tag ${tag.title}`}
-                onClick={() =>
-                  setTags(tags.filter((entry) => entry.title !== tag.title))
-                }
+                title={`Remove tag ${tagTitle}`}
+                onClick={() => removeTag(tagTitle)}
               >
                 ×
               </button>
@@ -370,7 +390,10 @@ export const KanbanCardModal = ({
           >
             <option value="">+ tag…</option>
             {knownTags
-              .filter((tagTitle) => !tags.some((t) => t.title === tagTitle))
+              .filter(
+                (tagTitle) =>
+                  !displayedTags.some((entry) => entry.title === tagTitle)
+              )
               .map((tagTitle) => (
                 <option key={tagTitle} value={tagTitle}>
                   {tagTitle}

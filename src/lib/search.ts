@@ -1,4 +1,5 @@
 import { KanbanBoard, KanbanCard } from '../../types/react-trello';
+import { labelTagTitles } from './labelTags';
 
 export type SearchableField =
   | 'title'
@@ -22,12 +23,14 @@ export const SEARCHABLE_FIELDS: Array<{
 
 /**
  * Case-insensitive substring match against the chosen fields.
- * An empty fields list means "search all fields".
+ * An empty fields list means "search all fields". Label parts that are
+ * known tags (see labelTags.ts) also match under the "tags" field.
  */
 export const cardMatchesSearch = (
   card: KanbanCard,
   query: string,
-  fields: SearchableField[] = []
+  fields: SearchableField[] = [],
+  knownTags: Set<string> = new Set()
 ): boolean => {
   if (!query) {
     return false;
@@ -52,6 +55,7 @@ export const cardMatchesSearch = (
         break;
       case 'tags':
         haystacks.push(...(card.tags ?? []).map((tag) => tag.title));
+        haystacks.push(...labelTagTitles(card, knownTags));
         break;
       case 'fields':
         Object.entries(card.fields ?? {}).forEach(([key, value]) => {
@@ -66,7 +70,8 @@ export const cardMatchesSearch = (
 export const findMatchingCardIds = (
   boardData: KanbanBoard,
   query: string,
-  fields: SearchableField[] = []
+  fields: SearchableField[] = [],
+  knownTags: Set<string> = new Set()
 ): Set<string> => {
   const ids = new Set<string>();
   if (!query) {
@@ -74,7 +79,7 @@ export const findMatchingCardIds = (
   }
   boardData.lanes.forEach((lane) =>
     lane.cards.forEach((card) => {
-      if (card.id && cardMatchesSearch(card, query, fields)) {
+      if (card.id && cardMatchesSearch(card, query, fields, knownTags)) {
         ids.add(card.id);
       }
     })

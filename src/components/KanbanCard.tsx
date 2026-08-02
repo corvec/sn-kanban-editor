@@ -11,6 +11,7 @@ import {
 import { IconMessage, IconHistory, IconX } from '@tabler/icons';
 import { MarkdownEditable } from './MarkdownEditable';
 import { BoardContext } from './BoardContext';
+import { renderLabelWithTags } from './LabelTags';
 import { resolveTagStyle } from '../lib/tagStyles';
 import { KanbanTag } from '../../types/react-trello';
 
@@ -40,7 +41,7 @@ export const KanbanCard = (props: any) => {
     className,
     t,
   } = props;
-  const { config, searchState } = useContext(BoardContext);
+  const { config, searchState, knownTags } = useContext(BoardContext);
 
   const updateCard = (changes: object) => onChange({ ...changes, id });
 
@@ -72,6 +73,9 @@ export const KanbanCard = (props: any) => {
             value={label}
             placeholder={t('placeholder.label')}
             onSave={(value) => updateCard({ label: value })}
+            renderView={(value) =>
+              renderLabelWithTags(value, config, knownTags)
+            }
           />
         </CardRightContent>
         {showDeleteButton && (

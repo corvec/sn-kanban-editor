@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { KanbanCard } from './KanbanCard';
+import { BoardContext } from './BoardContext';
 
 const t = (key: string) => key;
 
@@ -73,5 +74,32 @@ describe('KanbanCard', () => {
   it('shows the comment count on the Details button', () => {
     renderCard({ comments: ['a', 'b', 'c'] });
     expect(screen.getByText('3')).toBeInTheDocument();
+  });
+});
+
+describe('label-based tags', () => {
+  it('renders known-tag label parts as styled chips', () => {
+    render(
+      <BoardContext.Provider
+        value={{
+          config: { tags: { Pink: { bgcolor: 'pink' } } },
+          searchState: null,
+          knownTags: new Set(['Pink']),
+        }}
+      >
+        <KanbanCard
+          id="card-2"
+          title="Card"
+          label="Pink, tomorrow"
+          onClick={jest.fn()}
+          onChange={jest.fn()}
+          onDelete={jest.fn()}
+          t={t}
+        />
+      </BoardContext.Provider>
+    );
+    const chip = screen.getByText('Pink');
+    expect(chip).toHaveStyle({ backgroundColor: 'pink' });
+    expect(screen.getByText('tomorrow')).toBeInTheDocument();
   });
 });
